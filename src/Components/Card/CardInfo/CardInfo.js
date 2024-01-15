@@ -14,7 +14,7 @@ import Editable from "../../Editabled/Editable";
 
 import "./CardInfo.css";
 
-function CardInfo(props) {
+function CardInfo(props) {  
   const colors = [
     "#a8193d",
     "#4fcc25",
