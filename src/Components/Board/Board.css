@@ -1,0 +1,72 @@
+.board {
+    min-width: 290px;
+    width: 290px;
+    max-height: 100%;
+    flex-basis: 290px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.board_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.board_header_title {
+    font-weight: bold;
+    font-size: 1rem;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    color: rgb(244, 244, 244);
+}
+
+.board_header_title span {
+    color: rgb(249, 249, 249);
+}
+
+.board_header_title_more {
+    cursor: pointer;
+    position: relative;
+    color: rgb(0, 0, 0);
+}
+
+.board_dropdown {
+    box-shadow: 1px 0px 20px rgba(255, 255, 255, 0.957);
+    padding: 20px;
+    width: 150px !important;
+    cursor: default;
+}
+
+.board_dropdown p {
+    border-bottom: 1px solid #f8f8f8;
+    cursor: pointer;
+}
+
+.board_cards {
+    background-color: #000000;
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+    box-shadow: 1px 0px 20px rgb(255, 255, 255);
+}
+
+.board_add-card {
+    background-color: #e2e2e2;
+    color: #0e0e0e;
+    border-radius: 10px;
+    box-shadow: 1px 1px 0 1px rgba(0, 0, 0, 0.12);
+    width: 100%;
+    text-align: center;
+}
+
+.board_add-card_edit {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 10px;
+}
