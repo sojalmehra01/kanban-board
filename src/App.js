@@ -152,7 +152,7 @@ function App() {
           </div>
         </div>
       </div>
-          <div class="bubbles">
+          {/* <div class="bubbles">
             <span style={{'--i': 11}}></span>
             <span style={{'--i': 12}}></span>
             <span style={{'--i': 24}}></span>
@@ -193,7 +193,7 @@ function App() {
             <span style={{'--i': 17}}></span>
             <span style={{'--i': 13}}></span>
             <span style={{'--i': 28}}></span> 
-          </div>
+          </div> */}
         </div>
     </div>
   );

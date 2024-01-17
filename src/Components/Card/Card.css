@@ -1,10 +1,13 @@
 .card {
+    overflow-x: hidden;
+    width: 100%;
     padding: 10px;
     display: flex;
     flex-direction: column;
     gap: 10px;
-    background-color: #fff;
+    background-color: #ABD2FA;
     border-radius: 10px;
+    color: black;
 }
 
 .card_top {

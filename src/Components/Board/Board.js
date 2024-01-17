@@ -13,14 +13,14 @@ function Board(props) {
   return (
     <div className="board">
       <div className="board_header">
-        <p className="board_header_title">
+        <h1 className="board_header_title">
           {props.board?.title}
-          <span>{props.board?.cards?.length || 0}</span>
-        </p>
+          {" ( "}<span>{props.board?.cards?.length || 0}</span>{" )"}
+        </h1>
         <div
           className="board_header_title_more"
           onClick={() => setShowDropdown(true)}
-        >
+        > 
           <MoreHorizontal />
           {showDropdown && (
             <Dropdown
