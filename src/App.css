@@ -20,12 +20,20 @@
 }
 
 .app_nav {
+  position: sticky;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+  margin: 10px 10px 0 10px;
   padding: 10px;
-  box-shadow: 0 1px 20px rgba(56, 40, 40, 0.05);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
   background-color: #e9e4e4;
+}
+.app_nav h1{
+  font-family: 'Courier New', Courier, monospace;
+
 }
 
 .app_boards_container {
@@ -33,10 +41,8 @@
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: #000;
   animation: animate 15s linear infinite;
   animation-duration: calc(125s / var(--i));
-  z-index: 1;
 }
 
 * {
@@ -46,7 +52,7 @@
 }
 body {
   min-height: 100vh;
-  background: rgb(0, 0, 0)
+  background: rgb(0, 0, 0, 0.85)
 }
 .container {
   position: relative;
@@ -54,10 +60,13 @@ body {
   height: 100vh;
   overflow: hidden;
 }
+
+/* ======================Bubble section======================== */
+
 .bubbles {
   position: relative;
   display: flex;
-  z-index: 2;
+  z-index: -1;
 }
 .bubbles span {
   position: relative;
@@ -65,32 +74,57 @@ body {
   height: 30px;
   background: #4fc3dc;
   margin: 0 4px;
-  border-radius: 50%;
+  border-radius: 10%;
   box-shadow: 0 0 0 10px #4fc3dc44,
     0 0 50px #4fc3dc,
     0 0 100px #4fc3dc;
-  animation: animate 15s linear infinite;
+  animation: animateoppo 15s linear infinite;
   animation-duration: calc(125s / var(--i));
 }
 
 .bubbles span:nth-child(even) {
-  background: #d0cdce;
+  background: #edff4b;
   box-shadow: 0 0 0 10px #fcfcfc44,
-    0 0 50px #e0e0e0,
-    0 0 100px #ffffff;
+    0 0 50px #fff985,
+    0 0 100px #f4ff94;
   animation: animate 15s linear infinite;
   animation-duration: calc(150s / var(--i));
-
+}
+.bubbles span:nth-child(3n) {
+  background: #ff568f;
+  box-shadow: 0 0 0 10px #fcfcfc44,
+    0 0 50px #ff8282,
+    0 0 100px #ffb7b7;
+  animation: animate 15s linear infinite;
+  animation-duration: calc(150s / var(--i));
+}
+.bubbles span:nth-child(5n) {
+  background: #2ef961;
+  box-shadow: 0 0 0 10px #fcfcfc44,
+    0 0 50px #87fd8f,
+    0 0 100px #87fd8f;
+  animation: animateoppo 15s linear infinite;
+  animation-duration: calc(150s / var(--i));
 }
 
 @keyframes animate {
   0% {
-    transform: translateY(100vh) scale(0);
+    transform: translateY(-10vh) scale(1) rotate(0deg);
   }
   100% {
-    transform: translateY(-10vh) scale(1);
+    transform: translateY(100vh) scale(0) rotate(1080deg);
   }
 }
+@keyframes animateoppo {
+  0% {
+    transform: translateY(100vh) scale(0) rotate(1080deg);
+  }
+  100% {
+    transform: translateY(-10vh) scale(1) rotate(0deg);
+  }
+}
+/* ======================Bubble section======================== */
+
 
 .app_boards {
   height: 100%;
