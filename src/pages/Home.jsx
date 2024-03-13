@@ -118,10 +118,7 @@ const Home = () => {
       }, [boards]);
 
   return (
-    <div className='app'>
-      <div className="app_nav">
-        <h1>Kanban Board</h1>
-      </div>
+    <div className='home'>
       <div class="container">
         <div className="app_boards_container">
         <div className="app_boards">

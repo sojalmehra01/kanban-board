@@ -23,30 +23,6 @@
   flex-direction: column;
 }
 
-/* =================================NAVBAR START====================================== */
-.app_nav {
-  position: sticky;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 20px;
-  margin: 10px 10px 0 10px;
-  padding: 10px;
-  position: sticky;
-  top: 0;
-  background-color: #091540;
-  /* background-image: linear-gradient(to bottom, rgb(23, 142, 252), rgb(145, 198, 248)); */
-}
-.app_nav h1{
-  font-family: 'Salsa', cursive;
-  color: white;
-  font-weight: 300;
-  letter-spacing: 2px;
-  word-spacing: 5px;
-
-}
-/* =================================NAVBAR END====================================== */
-
 .app_boards_container {
   flex: 1;
   position: absolute;

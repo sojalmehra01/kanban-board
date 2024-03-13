@@ -1,6 +1,5 @@
 .board {
     /* z-index: 2; */
-    overflow-x: hidden;
     padding: 10px;
     /* min-width: 290px; */
     width: 290px;
