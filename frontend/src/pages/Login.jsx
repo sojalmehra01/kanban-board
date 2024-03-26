@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, TextField, Grid, Typography } from '@mui/material';
-import supabase from '..Supabaseclient'; // Import the Supabase client
+import supabase from '../Supabaseclient'; // Import the Supabase client
 
 const Login = () => {
  const [email, setEmail] = useState('');
