@@ -1,23 +1,26 @@
 import React, { useState } from 'react';
 import { Button, TextField, Grid, Typography } from '@mui/material';
-// import { GoogleLogin } from '@react-oauth/google'; // Corrected import statement
+import supabase from './supabaseClient'; // Import the Supabase client
 
 const Login = () => {
  const [email, setEmail] = useState('');
  const [password, setPassword] = useState('');
+ const [loading, setLoading] = useState(false);
 
- const handleSubmit = (e) => {
+ const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle login logic here
+    setLoading(true);
+    const { error } = await supabase.auth.signIn({ email, password });
+    if (error) {
+      alert(error.error_description || error.message);
+    } else {
+      alert('Logged in successfully!');
+    }
+    setLoading(false);
  };
 
-//  const responseGoogle = (response) => {
-//     console.log(response);
-//     // Handle Google login response here
-//  };
-
  return (
-    <Grid container spacing={2} style={{  padding: '20px' }}>
+    <Grid container spacing={2} style={{ padding: '20px' }}>
       <Grid item xs={12}>
         <Typography variant="h4" style={{ color: '#6A1B9A' }}>Login</Typography>
       </Grid>
@@ -41,18 +44,9 @@ const Login = () => {
         />
       </Grid>
       <Grid item xs={12}>
-        <Button variant="contained" color="primary" onClick={handleSubmit}>
+        <Button variant="contained" color="primary" onClick={handleSubmit} disabled={loading}>
           Login
         </Button>
-      </Grid>
-      <Grid item xs={12}>
-        {/* <GoogleLogin
-          clientId="YOUR_CLIENT_ID"
-          buttonText="Sign in with Google"
-          onSuccess={responseGoogle}
-          onFailure={responseGoogle}
-          cookiePolicy={"single_host_origin"}
-        /> */}
       </Grid>
     </Grid>
  );
