@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/backend board/node_modules
 /.pnp
 .pnp.js
 
