@@ -11,7 +11,7 @@ const Navbar = () => {
       <div className="nav_btn">
         <Link className='link_btn' to={"/home"}>home</Link>
         <Link className='link_btn' to={"/login"}>Login</Link>
-        <Link className='link_btn' to={"/home"}>home</Link>
+        <Link className='link_btn' to={"/signup"}>signup</Link>
         <Link className='link_btn' to={"/home"}>home</Link>
         <Link className='link_btn' to={"/home"}>home</Link>
         <div className="user"></div>

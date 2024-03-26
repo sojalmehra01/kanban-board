@@ -1,12 +1,10 @@
-import React, { useState  } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
 import { supabase } from '../Supabaseclient';
 
-const Login = ({setToken}) => {
-
-    const navigate = useNavigate();
+const Signup = () => {
  
-  const [formData, setformData]  = useState({ email:"", password:""
+  const [formData, setformData]  = useState({
+    fullname:"", email:"", password:""
   })
 
  console.log(formData)
@@ -20,17 +18,21 @@ const Login = ({setToken}) => {
   })
  }
 
- const handleLogin =async (e)=>{
+ const handleSignup =async (e)=>{
   e.preventDefault();
   try {
-        const { data, error } = await supabase.auth.signInWithPassword({
-            email: formData.email,
-            password: formData.password,
-        })
-    if(error) throw error
-    console.log(data);
-    setToken(data);
-    navigate('/home')
+    const {data, error} = await supabase.auth.signUp({
+      email: formData.email, 
+      password: formData.password, 
+      options: {
+        data: {
+          full_name: formData.fullname,
+        }
+      }
+    }
+    )
+    if(error) throw error;
+    alert('check your email for further verification')
   } catch (error) {
     alert(error)
   }
@@ -38,7 +40,8 @@ const Login = ({setToken}) => {
 
  return (
     <div className="login_form">
-      <form action=""onSubmit={handleLogin}>
+      <form action=""onSubmit={handleSignup}>
+        <input name ="fullname" placeholder='Full Name' onChange={handleChange}/>
 
         <input name='email' placeholder='email' onChange={handleChange}/>
 
@@ -53,4 +56,4 @@ const Login = ({setToken}) => {
  );
 };
 
-export default Login;
+export default Signup;
