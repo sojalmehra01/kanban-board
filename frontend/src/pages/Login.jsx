@@ -1,6 +1,7 @@
 import React, { useState  } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../Supabaseclient';
+import './login.css'
 
 const Login = ({setToken}) => {
 
@@ -37,12 +38,23 @@ const Login = ({setToken}) => {
  }
 
  return (
-    <div className="login_form">
-      <form action=""onSubmit={handleLogin}>
+    <div className="login_form_box">
 
-        <input name='email' placeholder='email' onChange={handleChange}/>
+
+      <form className={'login_form'}onSubmit={handleLogin}>
+        <h1 className='login_title'>Login.</h1>
+
+        <p className='new_here'>New to this website? <Link to={'/signup'}>signup</Link></p>
+
+        <input autoComplete='off' name='email' placeholder='Email' onChange={handleChange}/>
+        <label className='form__label' htmlFor="email">Email <span class="material-symbols-outlined">
+mail
+</span></label>
 
         <input name='password' type="password" placeholder='password' onChange={handleChange} />
+        <label className='form__label' htmlFor="email">Password<span class="material-symbols-outlined">
+lock
+</span></label>
          
         <button type="submit">
           Submit
