@@ -44,7 +44,7 @@ const Login = ({setToken}) => {
       <form className={'login_form'}onSubmit={handleLogin}>
         <h1 className='login_title'>Login.</h1>
 
-        <p className='new_here'>New to this website? <Link to={'/signup'}>signup</Link></p>
+        <p className='new_here'>New to this website? <Link to={'/signup'}>Signup</Link></p>
 
         <input autoComplete='off' name='email' placeholder='Email' onChange={handleChange}/>
         <label className='form__label' htmlFor="email">Email <span class="material-symbols-outlined">

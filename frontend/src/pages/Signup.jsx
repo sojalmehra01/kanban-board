@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { supabase } from '../Supabaseclient';
+import { Link} from 'react-router-dom';
+import './signup.css'
+
 
 const Signup = () => {
  
@@ -39,13 +42,33 @@ const Signup = () => {
  }
 
  return (
-    <div className="login_form">
-      <form action=""onSubmit={handleSignup}>
-        <input name ="fullname" placeholder='Full Name' onChange={handleChange}/>
+    <div className="login_form_box">
+      <form action=""onSubmit={handleSignup} className={'login_form'}>
 
-        <input name='email' placeholder='email' onChange={handleChange}/>
+      <h1 className='login_title'>Signup.</h1>
+
+        <p className='new_here'>Already a member? <Link to={'/login'}>Login</Link></p>
+
+        <div className="full_name">
+          <div className="firstname">
+          <input autoComplete='off' name ="first_name" placeholder='First Name' onChange={handleChange}/>
+          <label className='form__label' htmlFor="email">First name <span class="material-symbols-outlined">mail
+          </span></label>
+          </div>
+          <div className="lastname">
+          <input autoComplete='off' name ="laset_name" placeholder='Last Name' onChange={handleChange}/>
+          <label className='form__label' htmlFor="email">Last name <span class="material-symbols-outlined">mail
+          </span></label>
+          </div>
+        </div>
+
+        <input autoComplete='off' name='email' placeholder='email' onChange={handleChange}/>
+        <label className='form__label' htmlFor="email">Email <span class="material-symbols-outlined">mail
+        </span></label>
 
         <input name='password' type="password" placeholder='password' onChange={handleChange} />
+        <label className='form__label' htmlFor="email">Password<span class="material-symbols-outlined">lock
+        </span></label>
          
         <button type="submit">
           Submit

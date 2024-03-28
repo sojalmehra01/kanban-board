@@ -3,7 +3,7 @@
 .login_form_box{
     background-color:black;
     width: 100%;
-    height: 80vh;
+    height: 90vh;
     display: flex;
     color: white;
 
@@ -18,15 +18,21 @@
     /* justify-content: space-between; */
 }
 
+.login_form h1{
+    font-size: 60px;
+    margin: 40px 0;
+}
+
 .login_form p{
     color: rgb(145, 145, 145);
+    margin-bottom: 20px;
 }
 .login_form p a{
     color: rgb(255, 132, 0)
 }
 
 .login_form input{
-    margin: 50px 0 0 0 ;
+    margin: 20px 0 0 0 ;
     transition: 0.2s all ease-in-out;
     background: none;
     border: 1px solid rgb(255, 132, 0);
@@ -57,12 +63,19 @@
 }
 
 .login_form button{
-    background: none;
+    align-self: flex-start;
+    background-color:rgb(255, 132, 0);
     border: 1px solid rgb(255, 132, 0);
     color: white;
-    width: 250px;
+    width: 100px;
     padding: 10px;
     font-size: large;
-    border-radius: 10px;
-    margin-top: 50px;
+    border-radius: 50px;
+    margin-top: 30px;
+    transition: 0.1s all ease-in-out;
+}
+
+.login_form button:hover{
+
+    box-shadow: 0 0 30px rgb(249, 172, 90), 0 0 10px white inset;
 }

@@ -1,0 +1,11 @@
+.full_name{
+    display: flex;
+    justify-content: space-between;
+}
+
+.firstname input{
+    width: 125px;
+}
+.lastname input{
+    width: 125px;
+}
