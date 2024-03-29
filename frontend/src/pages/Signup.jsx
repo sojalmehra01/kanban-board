@@ -7,7 +7,7 @@ import './signup.css'
 const Signup = () => {
  
   const [formData, setformData]  = useState({
-    fullname:"", email:"", password:""
+    first_name:"",last_name:"", email:"", password:""
   })
 
  console.log(formData)
@@ -29,7 +29,8 @@ const Signup = () => {
       password: formData.password, 
       options: {
         data: {
-          full_name: formData.fullname,
+          first_name: formData.first_name,
+          last_name: formData.last_name
         }
       }
     }
@@ -52,22 +53,20 @@ const Signup = () => {
         <div className="full_name">
           <div className="firstname">
           <input autoComplete='off' name ="first_name" placeholder='First Name' onChange={handleChange}/>
-          <label className='form__label' htmlFor="email">First name <span class="material-symbols-outlined">mail
-          </span></label>
+          <label className='form__label' htmlFor="email">First name <span className="material-symbols-outlined">person</span></label>
           </div>
           <div className="lastname">
           <input autoComplete='off' name ="laset_name" placeholder='Last Name' onChange={handleChange}/>
-          <label className='form__label' htmlFor="email">Last name <span class="material-symbols-outlined">mail
-          </span></label>
+          <label className='form__label' htmlFor="email">Last name <span className="material-symbols-outlined">person</span></label>
           </div>
         </div>
 
         <input autoComplete='off' name='email' placeholder='email' onChange={handleChange}/>
-        <label className='form__label' htmlFor="email">Email <span class="material-symbols-outlined">mail
+        <label className='form__label' htmlFor="email">Email <span className="material-symbols-outlined">mail
         </span></label>
 
         <input name='password' type="password" placeholder='password' onChange={handleChange} />
-        <label className='form__label' htmlFor="email">Password<span class="material-symbols-outlined">lock
+        <label className='form__label' htmlFor="email">Password<span className="material-symbols-outlined">lock
         </span></label>
          
         <button type="submit">

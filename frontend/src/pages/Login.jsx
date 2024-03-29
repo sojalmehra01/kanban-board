@@ -47,12 +47,12 @@ const Login = ({setToken}) => {
         <p className='new_here'>New to this website? <Link to={'/signup'}>Signup</Link></p>
 
         <input autoComplete='off' name='email' placeholder='Email' onChange={handleChange}/>
-        <label className='form__label' htmlFor="email">Email <span class="material-symbols-outlined">
+        <label className='form__label' htmlFor="email">Email <span className="material-symbols-outlined">
 mail
 </span></label>
 
         <input name='password' type="password" placeholder='password' onChange={handleChange} />
-        <label className='form__label' htmlFor="email">Password<span class="material-symbols-outlined">
+        <label className='form__label' htmlFor="email">Password<span className="material-symbols-outlined">
 lock
 </span></label>
          

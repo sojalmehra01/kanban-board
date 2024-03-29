@@ -1,8 +1,20 @@
 import Editable from "../Components/Editabled/Editable";
 import Board from "../Components/Board/Board";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  
+  const navigate = useNavigate();
+  
+  useEffect(()=>{
+    const local_token = sessionStorage.getItem('token');
+    if(local_token == null) navigate('/login');
+    console.log("hello i'm token valaa useEffect");
+  },[navigate]);
+
+
+
     const [boards, setBoards] = useState(
         JSON.parse(localStorage.getItem("prac-kanban")) || []
       );
@@ -112,6 +124,7 @@ const Home = () => {
     
         setBoards(tempBoards);
       };
+
     
       useEffect(() => {
         localStorage.setItem("prac-kanban", JSON.stringify(boards));
@@ -119,7 +132,7 @@ const Home = () => {
 
   return (
     <div className='home'>
-      <div class="container">
+      <div className="container">
         <div className="app_boards_container">
         <div className="app_boards">
           {boards.map((item) => (

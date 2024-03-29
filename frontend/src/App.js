@@ -21,11 +21,12 @@ function App() {
       let data = JSON.parse(sessionStorage.getItem(token));
       setToken(data);
     }
-  },[])
+  },[token])
   return (
     <Router>
       <Navbar/>
       <Routes>
+      <Route path="*" element={<div> Not Found or You do not have permission.</div>}/>
         <Route path="/login" element={<Login setToken={setToken}/>}/>
         {token?<Route path="/home" element={<Home/>}/>:''}
         <Route path="/signup" element={<Signup/>}/>
