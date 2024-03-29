@@ -4,14 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Home = () => {
-  
-  const navigate = useNavigate();
-  
-  useEffect(()=>{
-    const local_token = sessionStorage.getItem('token');
-    if(local_token == null) navigate('/login');
-    console.log("hello i'm token valaa useEffect");
-  },[navigate]);
+
 
 
 

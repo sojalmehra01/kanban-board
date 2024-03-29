@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Navbar from "./Components/navbar/Navbar";
 import { useEffect, useState } from "react";
+import Error from "./pages/Error";
 
 function App() {
   
@@ -26,7 +27,7 @@ function App() {
     <Router>
       <Navbar/>
       <Routes>
-      <Route path="*" element={<div> Not Found or You do not have permission.</div>}/>
+      <Route path="*" element={<Error/>}/>
         <Route path="/login" element={<Login setToken={setToken}/>}/>
         {token?<Route path="/home" element={<Home/>}/>:''}
         <Route path="/signup" element={<Signup/>}/>
