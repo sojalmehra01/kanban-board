@@ -1,11 +1,10 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
+const mongoUrl = process.env.MONGO_URL;
 
 const connectDB = async () => {
-    await mongoose.connect('mongodb://localhost:27017/kanban', {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    })
-    .then(() => console.log('Connected to MongoDB'))
+    await mongoose.connect(mongoUrl)
+    .then(() => console.log('Connected'))
     .catch(err => console.error('Could not connect to MongoDB', err));
 };
 
