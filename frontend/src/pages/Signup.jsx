@@ -56,7 +56,7 @@ const Signup = () => {
           <label className='form__label' htmlFor="email">First name <span className="material-symbols-outlined">person</span></label>
           </div>
           <div className="lastname">
-          <input autoComplete='off' name ="laset_name" placeholder='Last Name' onChange={handleChange}/>
+          <input autoComplete='off' name ="last_name" placeholder='Last Name' onChange={handleChange}/>
           <label className='form__label' htmlFor="email">Last name <span className="material-symbols-outlined">person</span></label>
           </div>
         </div>
