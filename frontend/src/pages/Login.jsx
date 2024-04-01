@@ -1,24 +1,27 @@
-import React, { useState  } from 'react';
+import React, { useContext, useState  } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../Supabaseclient';
 import './login.css'
+import {useDispatch}  from 'react-redux';
+import { setUserDetails } from '../features/user/userSlice';
 
 const Login = ({setToken}) => {
 
-    const navigate = useNavigate();
+  // const dispatch = useDispatch();
+  const navigate = useNavigate();
  
   const [formData, setformData]  = useState({ email:"", password:""
   })
 
- console.log(formData)
+  console.log(formData)
 
- const handleChange = (event)=> {
-  setformData((prevFormData) =>{
-    return{
-      ...prevFormData, [event.target.name]:event.target.value
-    }
-    
-  })
+  const handleChange = (event)=> {
+    setformData((prevFormData) =>{
+      return{
+        ...prevFormData, [event.target.name]:event.target.value
+      }
+      
+    })
  }
 
  const handleLogin =async (e)=>{
@@ -29,8 +32,20 @@ const Login = ({setToken}) => {
             password: formData.password,
         })
     if(error) throw error
-    console.log(data);
     setToken(data);
+    const user = data.user;
+    console.log(user);
+    console.log(user.id)
+    console.log(user.email);
+    console.log(user.user_metadata.full_name);
+
+    const essentialDetails = {  
+      id: user.id, 
+      email: user.email, 
+      full_name: user.user_metadata.full_name
+    }
+    // dispatch(setUserDetails(essentialDetails));
+
     navigate('/home')
   } catch (error) {
     alert(error)

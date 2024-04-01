@@ -1,15 +1,13 @@
 import Editable from "../Components/Editabled/Editable";
 import Board from "../Components/Board/Board";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Home = () => {
 
-
-
-
-    const [boards, setBoards] = useState(
-        JSON.parse(localStorage.getItem("prac-kanban")) || []
+  
+  const [boards, setBoards] = useState(
+    JSON.parse(localStorage.getItem("prac-kanban")) || []
       );
     
       const [targetCard, setTargetCard] = useState({
@@ -122,6 +120,8 @@ const Home = () => {
       useEffect(() => {
         localStorage.setItem("prac-kanban", JSON.stringify(boards));
       }, [boards]);
+
+
 
   return (
     <div className='home'>
