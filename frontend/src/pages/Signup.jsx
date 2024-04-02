@@ -10,8 +10,6 @@ const Signup = () => {
     first_name:"",last_name:"", email:"", password:""
   })
 
- console.log(formData)
-
  const handleChange = (event)=> {
   setformData((prevFormData) =>{
     return{

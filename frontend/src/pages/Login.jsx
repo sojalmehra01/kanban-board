@@ -13,8 +13,6 @@ const Login = ({setToken}) => {
   const [formData, setformData]  = useState({ email:"", password:""
   })
 
-  console.log(formData)
-
   const handleChange = (event)=> {
     setformData((prevFormData) =>{
       return{

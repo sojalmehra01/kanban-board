@@ -1,29 +1,29 @@
 const mongoose = require('mongoose');
 
 // const boardSchema = new mongoose.Schema({
-//  name: {
+//  board_title: {
 //     type: String,
 //     required: true,
 //  },
 //  description: String,
-//  tasks: [{
+//  board_tasks: [{
 //     type: mongoose.Schema.Types.ObjectId,
 //     ref: 'Task',
 //  }],
-//  createdBy: {
+//  board_createdBy: {
 //     type: mongoose.Schema.Types.ObjectId,
 //     ref: 'User',
 //     required: true,
 //  },
-//  createdAt: {
+//  board_createdAt: {
 //     type: Date,
 //     default: Date.now,
 //  },
-//  updatedAt: {
+//  board_updatedAt: {
 //     type: Date,
 //     default: Date.now,
 //  },
-//  permissions: [{
+//  baord_permissions: [{
 //     userId: {
 //       type: mongoose.Schema.Types.ObjectId,
 //       ref: 'User',
@@ -37,7 +37,7 @@ const mongoose = require('mongoose');
 //       default: false,
 //     },
 //  }],
-//  sharedWith: [{
+//  board_sharedWith: [{
 //     type: mongoose.Schema.Types.ObjectId,
 //     ref: 'User',
 //  }],
@@ -52,8 +52,8 @@ const mongoose = require('mongoose');
 
 
 const boardSchema = new mongoose.Schema({
-   board_id: Number,
    board_title: String,
+   board_id: Number,
    board_user: String,
   });
 
