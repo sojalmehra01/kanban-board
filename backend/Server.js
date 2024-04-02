@@ -21,10 +21,13 @@ app.use(express.json());
 
 // Use routes
 
+app.use("/api", require("./Routes/Boardroutes.js"))
 
 // app.use('/boards', Boardroutes);
 // app.use('/tasks', Taskroutes);
 
+const path = require("path");
+app.use(express.static(path.join(__dirname + "/public")));
 
 // app.use('/protected', protectedRoutes); // Use protected routes
 

@@ -45,7 +45,6 @@ const Login = ({setToken}) => {
       full_name: user.user_metadata.full_name
     }
     dispatch(setUserDetails(essentialDetails));
-
     navigate('/home')
   } catch (error) {
     alert(error)

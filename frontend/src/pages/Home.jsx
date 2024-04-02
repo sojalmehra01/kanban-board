@@ -17,14 +17,37 @@ const Home = () => {
         cid: "",
       });
     
-      const addboardHandler = (name) => {
+      const addboardHandler = async (name) => {
         const tempBoards = [...boards];
-        tempBoards.push({
-          id: Date.now() + Math.random() * 2,
-          title: name,
+
+        const newBoard = {
+          id: Date.now() + Math.random() * 2, 
+          title: name, 
           cards: [],
-        });
+        }
+        tempBoards.push(newBoard);
         setBoards(tempBoards);
+
+        const response = await fetch("http://localhost:5000/api/createBoard", 
+        {
+          method: "POST", 
+          headers: {
+            "Content-Type":"application/json"
+          }, 
+          body: JSON.stringify({
+            board_id: newBoard.id, 
+            name: newBoard.title, 
+            board_user: userDetails.email,  
+          })
+        })
+
+        const json = await response.json();
+
+        if(json.success)
+        {
+          alert('board created')
+        }
+        else console.log(json);
       };
     
       const removeBoard = (id) => {
