@@ -35,7 +35,7 @@ router.post("/createBoard",
       try {
          await Board.create({
             board_id : req.body.board_id, 
-            title: req.body.title, 
+            board_title: req.body.title, 
             board_user: req.body.board_user
          })
             

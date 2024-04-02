@@ -53,7 +53,7 @@ const mongoose = require('mongoose');
 
 const boardSchema = new mongoose.Schema({
    board_id: Number,
-   name: String,
+   board_title: String,
    board_user: String,
   });
 
