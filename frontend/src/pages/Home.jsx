@@ -1,11 +1,13 @@
 import Editable from "../Components/Editabled/Editable";
 import Board from "../Components/Board/Board";
-import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 const Home = () => {
 
-  
+  const userDetails = useSelector((state)=>state.user);
+  console.log(userDetails);
+
   const [boards, setBoards] = useState(
     JSON.parse(localStorage.getItem("prac-kanban")) || []
       );

@@ -7,7 +7,7 @@ import { setUserDetails } from '../features/user/userSlice';
 
 const Login = ({setToken}) => {
 
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
  
   const [formData, setformData]  = useState({ email:"", password:""
@@ -44,7 +44,7 @@ const Login = ({setToken}) => {
       email: user.email, 
       full_name: user.user_metadata.full_name
     }
-    // dispatch(setUserDetails(essentialDetails));
+    dispatch(setUserDetails(essentialDetails));
 
     navigate('/home')
   } catch (error) {
