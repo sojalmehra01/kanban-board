@@ -27,6 +27,7 @@ const Home = () => {
         }
         tempBoards.push(newBoard);
         setBoards(tempBoards);
+        console.log(newBoard.title)
 
         const response = await fetch("http://localhost:5000/api/createBoard", 
         {
@@ -36,7 +37,7 @@ const Home = () => {
           }, 
           body: JSON.stringify({
             board_id: newBoard.id, 
-            name: newBoard.title, 
+            title: newBoard.title, 
             board_user: userDetails.email,  
           })
         })

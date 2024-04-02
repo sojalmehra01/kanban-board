@@ -35,9 +35,11 @@ router.post("/createBoard",
       try {
          await Board.create({
             board_id : req.body.board_id, 
-            name: req.body.board_title, 
+            title: req.body.title, 
             board_user: req.body.board_user
          })
+            
+            console.log(req.body.title);
 
             res.json({success:true, message: "board successfully created"})
       } catch (error) {
