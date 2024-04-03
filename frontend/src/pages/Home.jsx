@@ -1,12 +1,21 @@
 import Editable from "../Components/Editabled/Editable";
 import Board from "../Components/Board/Board";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { supabase } from "../Supabaseclient";
 
 const Home = () => {
+  const [userDetails, setuserDetails] = useState({});
 
-  const userDetails = useSelector((state)=>state.user);
-  console.log(userDetails);
+  
+ const token = sessionStorage.getItem('token');
+ console.log(token)
+
+ const retrieveUser = async() =>{
+  const { data: { user } } = await supabase.auth.getUser()
+    console.log(user);
+    console.log(user.user_metadata.full_name);
+    setuserDetails(user);
+ }
 
   const [boards, setBoards] = useState(
     JSON.parse(localStorage.getItem("prac-kanban")) || []
@@ -19,15 +28,19 @@ const Home = () => {
     
       const addboardHandler = async (name) => {
         const tempBoards = [...boards];
+        console.log(Date.now())
+        let boardId = Date.now() + Math.random() * 2;
+        boardId = boardId.toFixed(1);
+        boardId = boardId*10;
+        console.log(boardId);
 
         const newBoard = {
-          id: Date.now() + Math.random() * 2, 
+          id: boardId,
           title: name, 
           cards: [],
         }
         tempBoards.push(newBoard);
         setBoards(tempBoards);
-        console.log(newBoard.title)
 
         const response = await fetch("http://localhost:5000/api/createBoard", 
         {
@@ -36,14 +49,13 @@ const Home = () => {
             "Content-Type":"application/json"
           }, 
           body: JSON.stringify({
-            board_id: newBoard.id, 
             title: newBoard.title, 
-            board_user: userDetails.email,  
+            board_id: newBoard.id,
+            board_user: userDetails.full_name,
           })
         })
-
+        console.log(userDetails.email)
         const json = await response.json();
-
         if(json.success)
         {
           alert('board created')
@@ -179,6 +191,7 @@ const Home = () => {
         </div>
       </div>
       </div>
+      <button onClick={retrieveUser}>retrieve user</button>
     </div>
   )
 }

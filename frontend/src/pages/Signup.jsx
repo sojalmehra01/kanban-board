@@ -33,6 +33,7 @@ const Signup = () => {
       }
     }
     )
+    console.log(data);
     if(error) throw error;
     alert('check your email for further verification')
   } catch (error) {
