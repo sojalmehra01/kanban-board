@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const boardSchema = new mongoose.Schema({
  board_title: {
     type: String,
+    unique: true,
     required: true,
  },
  boardId: {
@@ -20,6 +21,10 @@ const boardSchema = new mongoose.Schema({
  board_updatedAt: {
     type: Date,
     default: Date.now,
+ },
+ board_isDeleted:{
+   type: Boolean, 
+   default: false,
  },
  baord_permissions: [{
     userId: {

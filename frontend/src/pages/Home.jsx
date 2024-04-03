@@ -1,17 +1,24 @@
 import Editable from "../Components/Editabled/Editable";
 import Board from "../Components/Board/Board";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, } from "react";
 import { supabase } from "../Supabaseclient";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
 
- let userDetails = {};  
-
- const token = sessionStorage.getItem('token');
- console.log('access_token' + token)
-
+  const navigate = useNavigate();
+  
+  
+  const token = sessionStorage.getItem('token');
+  let userDetails = {};  
+  let user_name = '';
+  
  useEffect(()=>{
-  retrieveUser();
+  // retrieveUser();
+  if(!userDetails || !token)
+  {
+    navigate('/login'); 
+  }
  },[])
 
  const retrieveUser = async() =>{
@@ -19,6 +26,7 @@ const Home = () => {
     console.log(user);
     console.log(user.user_metadata.full_name);
     userDetails = user;
+    user_name = user.user_metadata.full_name;
     console.log(userDetails)
  }
 
@@ -26,12 +34,22 @@ const Home = () => {
     JSON.parse(localStorage.getItem("prac-kanban")) || []
       );
     
-      const [targetCard, setTargetCard] = useState({
-        bid: "",
-        cid: "",
-      });
+    const [targetCard, setTargetCard] = useState({
+      bid: "",
+      cid: "",
+    });
     
       const addboardHandler = async (name) => {
+        try{
+
+        const { data: { user } } = await supabase.auth.getUser()
+        console.log(user);
+        console.log(user.user_metadata.full_name);
+        userDetails = user;
+        user_name = user.user_metadata.full_name;
+        console.log(userDetails)
+
+
         const tempBoards = [...boards];
         console.log(Date.now())
         let boardId = Date.now() + Math.random() * 2;
@@ -56,7 +74,7 @@ const Home = () => {
           body: JSON.stringify({
             title: newBoard.title, 
             board_id: newBoard.id,
-            board_user: userDetails.user_metadata.full_name,
+            board_user: user_name,
           })
         })
         console.log(userDetails.email)
@@ -65,7 +83,20 @@ const Home = () => {
         {
           alert('board created')
         }
-        else console.log(json);
+        
+        else{
+          console.log(json);
+      // Assuming the server sends a specific error message for duplicate titles
+          if (json.error === 'Duplicate title') {
+            alert('A board with this name already exists. Please choose a different name.');
+          }
+        }
+      }
+        catch (error) {
+          console.error('Error creating board:', error);
+          // Handle the error appropriately, e.g., show an alert to the user
+          alert('An error occurred while creating the board. Please try again.');
+       }
       };
     
       const removeBoard = (id) => {
@@ -77,6 +108,7 @@ const Home = () => {
         setBoards(tempBoards);
       };
     
+      //add task 
       const addCardHandler = (id, title) => {
         const index = boards.findIndex((item) => item.id === id);
         if (index < 0) return;

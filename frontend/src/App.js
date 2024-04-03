@@ -51,7 +51,7 @@ function App() {
       <Routes>
       <Route path="*" element={<Error/>}/>
         <Route path="/login" element={<Login setToken={setToken}/>}/>
-        {token && <Route path="/home" element={<Home/>}/>}
+        <Route path="/home" element={<Home/>}/>
         <Route path="/signup" element={<Signup/>}/>
       </Routes>
     </Router>

@@ -27,9 +27,23 @@ router.post("/createBoard",
          })
          res.json({success:true, message: "board successfully created"})
       } catch (error) {
-            res.json(error);
+         if (error.code === 11000) { // MongoDB duplicate key error code
+           res.status(400).json({ error: 'Duplicate title' });
+         } else {
+           res.status(500).json({ error: 'An error occurred' });
+         }
       }
    }   
 )
 
+router.port("/deleteBoard", 
+   async(req, res)=>{
+      try{
+         await Board.fetch({
+
+         })
+      }
+      catch {}
+   }
+)
 module.exports = router;

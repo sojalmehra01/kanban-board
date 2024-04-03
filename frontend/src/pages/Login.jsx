@@ -1,4 +1,4 @@
-import React, { useState  } from 'react';
+import React, { useEffect, useState  } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../Supabaseclient';
 import './login.css'
@@ -6,6 +6,15 @@ import './login.css'
 const Login = ({setToken}) => {
 
   const navigate = useNavigate();
+
+  const retrieve_token = sessionStorage.getItem('token');
+
+  useEffect(()=>{
+    if(retrieve_token)
+    {
+      navigate('/home');
+    }
+  },[])
  
   const [formData, setformData]  = useState({ email:"", password:""
   })
