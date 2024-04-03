@@ -1,19 +1,6 @@
 const express = require('express');
 const Board = require('../Models/Board');
 
-// Get all boards
-// router.get('/boards', async (req, res) => {
-//    try {
-//       const boards = await Board.find().populate('tasks');
-//       res.send(boards);
-//    } catch (error) {
-//       console.error('Error fetching boards:', error);
-//       res.status(500).send({ error: 'Server error', details: error.message });
-//    }
-// });
-
-
-
 const router = express.Router();
 
 
@@ -36,14 +23,26 @@ router.post("/createBoard",
    }   
 )
 
-router.port("/deleteBoard", 
+router.post("/deleteBoard", 
    async(req, res)=>{
+      console.log(req.body.boardId);
       try{
-         await Board.fetch({
-
-         })
+         const result = await Board.updateOne(
+            {
+               boardId: req.body.boardId,
+            },
+            {
+               $set: {
+                  board_isDeleted: true,
+               },
+             }
+         )
+         console.log(result);
+         res.json({success:true, message: "board successfully deleted"})
       }
-      catch {}
+      catch (error){
+         console.log(error, "cannot delete board");
+      }
    }
 )
 module.exports = router;

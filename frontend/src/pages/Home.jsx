@@ -99,13 +99,40 @@ const Home = () => {
        }
       };
     
-      const removeBoard = (id) => {
+      const removeBoard = async(id) => {
         const index = boards.findIndex((item) => item.id === id);
-        if (index < 0) return;
-    
-        const tempBoards = [...boards];
-        tempBoards.splice(index, 1);
-        setBoards(tempBoards);
+
+        try {
+          const response = await fetch('http://localhost:5000/api/deleteBoard',
+            {
+              method: 'POST',
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body:JSON.stringify({
+                boardId: id,
+              })
+            }
+          )
+
+          const json = await response.json();
+          if(json.success)
+          {
+            console.log('board deleted successfully');
+            if (index < 0) return;
+            const tempBoards = [...boards];
+            tempBoards.splice(index, 1);
+            setBoards(tempBoards);
+          }
+          else{
+            alert("cannot delete please try again later");
+            console.log(json);
+          }
+
+        } catch (error) {
+          console.error(error);
+          
+        }
       };
     
       //add task 
@@ -228,7 +255,6 @@ const Home = () => {
         </div>
       </div>
       </div>
-      <button onClick={retrieveUser}>retrieve user</button>
     </div>
   )
 }
