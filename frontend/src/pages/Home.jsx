@@ -4,17 +4,22 @@ import React, { useEffect, useState } from "react";
 import { supabase } from "../Supabaseclient";
 
 const Home = () => {
-  const [userDetails, setuserDetails] = useState({});
 
-  
+ let userDetails = {};  
+
  const token = sessionStorage.getItem('token');
- console.log(token)
+ console.log('access_token' + token)
+
+ useEffect(()=>{
+  retrieveUser();
+ },[])
 
  const retrieveUser = async() =>{
   const { data: { user } } = await supabase.auth.getUser()
     console.log(user);
     console.log(user.user_metadata.full_name);
-    setuserDetails(user);
+    userDetails = user;
+    console.log(userDetails)
  }
 
   const [boards, setBoards] = useState(
@@ -51,7 +56,7 @@ const Home = () => {
           body: JSON.stringify({
             title: newBoard.title, 
             board_id: newBoard.id,
-            board_user: userDetails.full_name,
+            board_user: userDetails.user_metadata.full_name,
           })
         })
         console.log(userDetails.email)
