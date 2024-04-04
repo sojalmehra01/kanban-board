@@ -4,6 +4,20 @@ const Board = require('../Models/Board');
 const router = express.Router();
 
 
+router.post("/getBoards", async (req, res) => {
+   try {
+
+      const allBoards = await Board.find({
+            board_user : req.body.user_email,
+            board_isDeleted : false,
+         })
+         res.json({success:true, message: "board successfully fetched", boards : allBoards})
+      } catch (error) {
+           res.status(400).json({ message : error,error: 'An error occurred' });
+         
+      }
+})
+
 router.post("/createBoard", 
    async (req, res) =>{
       try {

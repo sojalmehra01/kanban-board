@@ -18,7 +18,9 @@ const Home = () => {
   if(!userDetails || !token)
   {
     navigate('/login'); 
-  }
+   }
+   retrieveUser();
+   retrieveBoards();
  },[])
 
  const retrieveUser = async() =>{
@@ -28,7 +30,34 @@ const Home = () => {
     userDetails = user;
     user_name = user.user_metadata.full_name;
     console.log(userDetails)
- }
+  }
+  
+  const retrieveBoards = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/getBoards",
+       {
+         method: "POST", 
+          headers: {
+            "Content-Type":"application/json"
+          }, 
+          body: JSON.stringify({
+            user_email: userDetails.email,
+          })
+        } 
+        )
+      const json = await response.json();
+      console.log(json);
+      if (json.success) {
+        alert("welcome");
+        console.log(json.boards);
+      } else {
+        console.log(json.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  
 
   const [boards, setBoards] = useState(
     JSON.parse(localStorage.getItem("prac-kanban")) || []
