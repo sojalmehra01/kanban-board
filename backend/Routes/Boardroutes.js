@@ -6,9 +6,10 @@ const router = express.Router();
 
 router.post("/getBoards", async (req, res) => {
    try {
-
+      const user_name = req.body.user_name;
+      console.log(user_name);
       const allBoards = await Board.find({
-            board_user : req.body.user_email,
+            board_user : user_name,
             board_isDeleted : false,
          })
          res.json({success:true, message: "board successfully fetched", boards : allBoards})

@@ -14,13 +14,12 @@ const Home = () => {
   let user_name = '';
   
  useEffect(()=>{
-  // retrieveUser();
   if(!userDetails || !token)
   {
     navigate('/login'); 
    }
    retrieveUser();
-   retrieveBoards();
+   
  },[])
 
  const retrieveUser = async() =>{
@@ -30,10 +29,12 @@ const Home = () => {
     userDetails = user;
     user_name = user.user_metadata.full_name;
     console.log(userDetails)
+    retrieveBoards();
   }
   
   const retrieveBoards = async () => {
     try {
+      console.log(user_name);
       const response = await fetch("http://localhost:5000/api/getBoards",
        {
          method: "POST", 
@@ -41,7 +42,7 @@ const Home = () => {
             "Content-Type":"application/json"
           }, 
           body: JSON.stringify({
-            user_email: userDetails.email,
+            user_name: user_name,
           })
         } 
         )
