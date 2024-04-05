@@ -14,7 +14,7 @@ const Navbar = () => {
         <Link className='link_btn' to={"/home"}>home</Link>
         <Link className='link_btn' to={"/login"}>Login</Link>
         <Link className='link_btn' to={"/signup"}>signup</Link>
-        <Link onClick={()=>{sessionStorage.removeItem('token')}} className='link_btn' to={"/login"}>logout</Link>
+        <Link onClick={()=>{localStorage.removeItem('sb-tkxtjervogiccudypfwz-auth-token')}} className='link_btn' to={"/login"}>logout</Link>
         <Link className='link_btn' to={"/home"}>home</Link>
         <div className="user"></div>
     </div>

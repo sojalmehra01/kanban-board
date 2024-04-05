@@ -9,8 +9,8 @@ const Home = () => {
   const navigate = useNavigate();
   
   
-  const token = sessionStorage.getItem('token');
-  let userDetails = {};  
+  const token = localStorage.getItem('sb-tkxtjervogiccudypfwz-auth-token');
+  let userDetails = {};
   let user_name = '';
   
  useEffect(()=>{

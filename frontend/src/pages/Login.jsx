@@ -7,12 +7,21 @@ const Login = ({setToken}) => {
 
   const navigate = useNavigate();
 
-  const retrieve_token = sessionStorage.getItem('token');
-
+  const [newToken, setnewToken] = useState("");
+  const token_le =  () => {
+    let retrieve_token = localStorage.getItem("sb-tkxtjervogiccudypfwz-auth-token");
+    if(retrieve_token) console.log(retrieve_token.access_token);
+    console.log(retrieve_token)
+    setnewToken(retrieve_token);
+    return retrieve_token;
+  }
+  
   useEffect(()=>{
+    const retrieve_token = token_le();
+    console.log(retrieve_token);
     if(retrieve_token)
     {
-      navigate('/home');
+      navigate('/');
     }
   },[])
  
@@ -41,7 +50,7 @@ const Login = ({setToken}) => {
     setToken(access_token);
     const user = data.user;
     console.log(user);
-    navigate('/home')
+    navigate('/')
   } catch (error) {
     alert(error)
   }
