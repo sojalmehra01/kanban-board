@@ -54,11 +54,4 @@ const boardSchema = new mongoose.Schema({
 
 
 
-// const boardSchema = new mongoose.Schema({
-//    board_title: String,
-//    boardId: Number,
-//    board_user: String,
-//   });
-
-
 module.exports = mongoose.model('Board', boardSchema);
