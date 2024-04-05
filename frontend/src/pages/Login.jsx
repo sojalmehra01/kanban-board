@@ -6,13 +6,10 @@ import './login.css'
 const Login = ({setToken}) => {
 
   const navigate = useNavigate();
-
-  const [newToken, setnewToken] = useState("");
   const token_le =  () => {
     let retrieve_token = localStorage.getItem("sb-tkxtjervogiccudypfwz-auth-token");
     if(retrieve_token) console.log(retrieve_token.access_token);
     console.log(retrieve_token)
-    setnewToken(retrieve_token);
     return retrieve_token;
   }
   
@@ -21,7 +18,7 @@ const Login = ({setToken}) => {
     console.log(retrieve_token);
     if(retrieve_token)
     {
-      navigate('/');
+      navigate('/dashboard');
     }
   },[])
  

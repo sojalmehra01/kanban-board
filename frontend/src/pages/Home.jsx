@@ -24,11 +24,8 @@ const Home = () => {
 
  const retrieveUser = async() =>{
   const { data: { user } } = await supabase.auth.getUser()
-    console.log(user);
-    console.log(user.user_metadata.full_name);
     userDetails = user;
     user_name = user.user_metadata.full_name;
-    console.log(userDetails)
     retrieveBoards();
   }
   
@@ -49,7 +46,6 @@ const Home = () => {
       const json = await response.json();
       console.log(json);
       if (json.success) {
-        alert("welcome");
         console.log(json.boards);
       } else {
         console.log(json.message);
