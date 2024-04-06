@@ -47,6 +47,9 @@ const Home = () => {
       console.log(json);
       if (json.success) {
         console.log(json.boards);
+        for (let i = 0; i < json.boards.length; i++){
+          boards[i]._id = json.boards[i]._id ; 
+        }
       } else {
         console.log(json.message);
       }
@@ -83,8 +86,9 @@ const Home = () => {
         boardId = boardId*10;
         console.log(boardId);
 
-        const newBoard = {
-          id: boardId,
+          const newBoard = {
+          _id : "",
+          boardId: boardId,
           title: name, 
           cards: [],
         }
@@ -170,7 +174,7 @@ const Home = () => {
     
         const tempBoards = [...boards];
         tempBoards[index].cards.push({
-          id: Date.now() + Math.random() * 2,
+          boardId: Date.now() + Math.random() * 2,
           title,
           labels: [],
           date: "",
