@@ -16,6 +16,7 @@ const Login = ({setToken}) => {
   useEffect(()=>{
     const retrieve_token = token_le();
     console.log(retrieve_token);
+    setToken(retrieve_token)
     if(retrieve_token)
     {
       navigate('/dashboard');
@@ -47,7 +48,7 @@ const Login = ({setToken}) => {
     setToken(access_token);
     const user = data.user;
     console.log(user);
-    navigate('/')
+    navigate('/dashboard')
   } catch (error) {
     alert(error)
   }
