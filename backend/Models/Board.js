@@ -29,7 +29,7 @@ const boardSchema = new mongoose.Schema({
  baord_permissions: [{
     userId: {
       type: String,
-      ref: 'User',
+      // ref: 'User',
     },
     canView: {
       type: Boolean,
@@ -42,7 +42,7 @@ const boardSchema = new mongoose.Schema({
  }],
  board_sharedWith: [{
     type: String,
-    ref: 'User',
+   //  ref: 'User',
  }],
 });
 

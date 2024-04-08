@@ -34,19 +34,18 @@ const taskSchema = new mongoose.Schema({
     ref: 'Board',
     required: true,
   },
-  taskId: {
+  cardId: {
     type: Number,
     required: true,
   },
-  task_title : {
-  type: String,
-  required: true,
+  card_title : {
+    type: String,
+    required: true,
   },
-  user_name: {
-    Type: String,
+  card_user: {
+    type: String,
     required:true,
   }
-  
 })
 
 module.exports = mongoose.model('Task', taskSchema);

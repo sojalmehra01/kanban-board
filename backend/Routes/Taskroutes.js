@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Task = require('../Models/Task');
-const subtask = reqiure('./Subtaskroutes')
+// const subtask = reqiure('./Subtaskroutes')
 
 // // Placeholder for authentication and authorization middleware
 // const isAuthenticated = (req, res, next) => {
@@ -14,35 +14,30 @@ const subtask = reqiure('./Subtaskroutes')
 // };
 
 // Get tasks by board ID
-router.get('/boards/:id/tasks', async (req, res) => {
- const { id } = req.params;
- try {
-    const tasks = await Task.find({ boardId: id });
-    res.send(tasks);
- } catch (error) {
-    console.error('Error fetching tasks:', error);
-    res.status(500).send('Server error');
- }
-});
+// router.get('/boards/:id/tasks', async (req, res) => {
+//  const { id } = req.params;
+//  try {
+//     const tasks = await Task.find({ boardId: id });
+//     res.send(tasks);
+//  } catch (error) {
+//     console.error('Error fetching tasks:', error);
+//     res.status(500).send('Server error');
+//  }
+// });
 
 // Create a new task
 router.post('/addCard', async (req, res) => {
-
 try {
-   if (!title) {
+   if (!req.body.card_title) {
       return res.status(400).send('Title is required');
    }
    await Task.create({
-      cardId: req.body.title,
+      boardId: req.body.boardId,
+      cardId: req.body.cardId,
       card_title: req.body.card_title,
-      card_user : req.body.user_name
+      card_user : req.body.card_user
    })
- res.json({success:true, message :"card created successfully "})
-
-   const task = new Task({ title, boardId: id });
-    await task.save();
-   res.send(task);
-   
+   res.json({success:true, message :"card created successfully "})
  } catch (error) {
     console.error('Error creating task:', error);
     res.status(500).send('Server error');

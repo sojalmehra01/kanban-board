@@ -26,12 +26,12 @@ const Home = () => {
   const { data: { user } } = await supabase.auth.getUser()
     userDetails = user;
     user_name = user.user_metadata.full_name;
+    console.log(user_name);
     retrieveBoards();
   }
   
   const retrieveBoards = async () => {
     try {
-      console.log(user_name);
       const response = await fetch("http://localhost:5000/api/getBoards",
        {
          method: "POST", 
@@ -197,10 +197,11 @@ const Home = () => {
         console.log(cardId);
 
         const newCard = {
+          board_id: tempBoards[index]._id,
           cardId: cardId,
-          card_title: title,
+          title: title,
           board_title: tempBoards[index].title,
-          user: user_name
+          card_user: user_name
         }
 
         const response = await fetch('http://localhost:5000/api/addCard',
@@ -210,8 +211,9 @@ const Home = () => {
           "Content-Type" : "application/json"              
           },
           body: JSON.stringify({
-            cardId: newCard.cardId,
-            card_title: newCard.card_title,
+            boardId: newCard.board_id,
+            cardId: cardId,
+            card_title: newCard.title,
             card_user:user_name
           })
         }        
