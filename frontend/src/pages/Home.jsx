@@ -117,7 +117,7 @@ const Home = () => {
         
         else{
           console.log(json);
-      // Assuming the server sends a specific error message for duplicate titles
+      // Assuming the server sends a specific error message for duplicate titles . 
           if (json.error === 'Duplicate title') {
             alert('A board with this name already exists. Please choose a different name.');
           }
@@ -125,6 +125,7 @@ const Home = () => {
       }
         catch (error) {
           console.error('Error creating board:', error);
+          alert(error);
           // Handle the error appropriately, e.g., show an alert to the user
           alert('An error occurred while creating the board. Please try again.');
        }
