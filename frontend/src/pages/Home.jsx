@@ -103,7 +103,7 @@ const Home = () => {
           }, 
           body: JSON.stringify({
             title: newBoard.title, 
-            board_id: newBoard.id,
+            board_id: newBoard.boardId,
             board_user: user_name,
           })
         })
