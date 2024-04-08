@@ -168,19 +168,68 @@ const Home = () => {
       };
     
       //add task 
-      const addCardHandler = (id, title) => {
+      const addCardHandler = async(id, title) => {
+      try {
         const index = boards.findIndex((item) => item.id === id);
         if (index < 0) return;
     
         const tempBoards = [...boards];
-        tempBoards[index].cards.push({
-          boardId: Date.now() + Math.random() * 2,
-          title,
-          labels: [],
-          date: "",
-          tasks: [],
-        });
+        // tempBoards[index].cards.push({
+        //   boardId: Date.now() + Math.random() * 2,
+        //   title,
+        //   labels: [],
+        //   date: "",
+        //   tasks: [],
+        // });
+
+        
+        const { data: { user } } = await supabase.auth.getUser()
+        console.log(user);
+        console.log(user.user_metadata.full_name);
+        userDetails = user;
+        user_name = user.user_metadata.full_name;
+        console.log(userDetails)
+
+        let cardId = Date.now() + Math.random() * 2;
+        cardId = cardId.toFixed(1);
+        cardId = cardId*10;
+        console.log(cardId);
+
+        const newCard = {
+          cardId: cardId,
+          card_title: title,
+          board_title: tempBoards[index].title,
+          user: user_name
+        }
+
+        const response = await fetch('http://localhost:5000/api/addCard',
+        {
+          method: 'POST',
+          headers: {
+          "Content-Type" : "application/json"              
+          },
+          body: JSON.stringify({
+            cardId: newCard.cardId,
+            card_title: newCard.card_title,
+            card_user:user_name
+          })
+        }        
+      )
+      const json = await response.json();
+      if (json.success) {
+        alert('card added');
+        tempBoards[index].cards.push(newCard);
         setBoards(tempBoards);
+        }
+          else {
+            console.log(json.error);
+        }
+        }
+        catch(error) {
+        console.log(error);
+        }
+
+
       };
     
       const removeCard = (bid, cid) => {
