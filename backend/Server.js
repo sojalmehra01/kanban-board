@@ -22,6 +22,7 @@ app.use(express.json());
 // Use routes
 
 app.use("/api", require("./Routes/Boardroutes.js"))
+app.use("/api", require("./Routes/Taskroutes.js"))
 
 // app.use('/boards', Boardroutes);
 // app.use('/tasks', Taskroutes);
