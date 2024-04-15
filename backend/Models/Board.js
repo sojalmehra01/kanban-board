@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const uniqueValidator = require('mongoose-unique-validator');
 
 const boardSchema = new mongoose.Schema({
  board_title: {
@@ -52,6 +53,6 @@ const boardSchema = new mongoose.Schema({
 //  next();
 // });
 
-
+boardSchema.plugin(uniqueValidator);
 
 module.exports = mongoose.model('Board', boardSchema);
