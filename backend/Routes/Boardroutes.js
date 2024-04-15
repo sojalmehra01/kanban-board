@@ -27,7 +27,7 @@ router.post("/createBoard",
             boardId : req.body.board_id, 
             board_user: req.body.board_user
          })
-         res.json({success:true, message: "board successfully created"})
+      res.json({success:true, message: "board successfully created"})
       } catch (error) {
          if (error.code === 11000) { // MongoDB duplicate key error code
            res.status(400).json({success:false, error: 'Duplicate title' });
