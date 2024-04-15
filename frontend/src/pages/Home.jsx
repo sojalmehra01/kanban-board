@@ -171,12 +171,15 @@ const Home = () => {
       //add task 
       const addCardHandler = async(id, title) => {
       try {
+        console.log(id);
+        console.log(title)
         const index = boards.findIndex((item) => item.id === id);
         if (index < 0) return;
+        console.log(index);
     
         const tempBoards = [...boards];
         // tempBoards[index].cards.push({
-        //   boardId: Date.now() + Math.random() * 2,
+        //   carddId: Date.now() + Math.random() * 2,
         //   title,
         //   labels: [],
         //   date: "",
@@ -197,12 +200,17 @@ const Home = () => {
         console.log(cardId);
 
         const newCard = {
-          board_id: tempBoards[index]._id,
+          board_id: tempBoards[index].boardId,
           cardId: cardId,
           title: title,
           board_title: tempBoards[index].title,
-          card_user: user_name
+          card_user: user_name,
+          labels: [],
+          date: "",
+          tasks: [],
         }
+
+        console.log(newCard);
 
         const response = await fetch('http://localhost:5000/api/addCard',
         {
@@ -211,28 +219,26 @@ const Home = () => {
           "Content-Type" : "application/json"              
           },
           body: JSON.stringify({
-            boardId: newCard.board_id,
+            boardId: tempBoards[index]._id,
             cardId: cardId,
             card_title: newCard.title,
             card_user:user_name
           })
-        }        
+        }
       )
       const json = await response.json();
       if (json.success) {
-        alert('card added');
         tempBoards[index].cards.push(newCard);
         setBoards(tempBoards);
+        alert('card added');
         }
           else {
             console.log(json.error);
-        }
-        }
+          }
+      }
         catch(error) {
         console.log(error);
         }
-
-
       };
     
       const removeCard = (bid, cid) => {
