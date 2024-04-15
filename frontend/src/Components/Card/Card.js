@@ -10,7 +10,7 @@ function Card(props) {
   const [showDropdown, setShowDropdown] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
-  const { id, title, date, tasks, labels } = props.card;
+  const {boardId, id, title,board_title, card_user, date, tasks, labels } = props.card;
 
   const formatDate = (value) => {
     if (!value) return "";

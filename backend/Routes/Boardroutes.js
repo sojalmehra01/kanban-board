@@ -30,10 +30,10 @@ router.post("/createBoard",
          res.json({success:true, message: "board successfully created"})
       } catch (error) {
          if (error.code === 11000) { // MongoDB duplicate key error code
-           res.status(400).json({ error: 'Duplicate title' });
+           res.status(400).json({success:false, error: 'Duplicate title' });
          } else {
             console.log(error);
-           res.status(500).json({ error: 'An error occurred' });
+           res.status(500).json({success: false, error: 'An error occurred' });
          }
       }
    }   

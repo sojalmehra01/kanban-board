@@ -26,7 +26,7 @@ const Home = () => {
   const { data: { user } } = await supabase.auth.getUser()
     userDetails = user;
     user_name = user.user_metadata.full_name;
-    console.log(user_name);
+    // console.log(user_name);
     retrieveBoards();
   }
   
@@ -47,9 +47,9 @@ const Home = () => {
       console.log(json);
       if (json.success) {
         console.log(json.boards);
-        for (let i = 0; i < json.boards.length; i++){
-          boards[i]._id = json.boards[i]._id ; 
-        }
+        // for (let i = 0; i < json.boards.length; i++){
+        //   boards[i]._id = json.boards[i]._id ; 
+        // }
       } else {
         console.log(json.message);
       }
@@ -72,11 +72,11 @@ const Home = () => {
         try{
 
         const { data: { user } } = await supabase.auth.getUser()
-        console.log(user);
-        console.log(user.user_metadata.full_name);
+        // console.log(user);
+        // console.log(user.user_metadata.full_name);
         userDetails = user;
         user_name = user.user_metadata.full_name;
-        console.log(userDetails)
+        // console.log(userDetails)
 
 
         const tempBoards = [...boards];
@@ -92,8 +92,7 @@ const Home = () => {
           title: name, 
           cards: [],
         }
-        tempBoards.push(newBoard);
-        setBoards(tempBoards);
+        
 
         const response = await fetch("http://localhost:5000/api/createBoard", 
         {
@@ -107,17 +106,19 @@ const Home = () => {
             board_user: user_name,
           })
         })
-        console.log(userDetails.email)
+        // console.log(userDetails.email)
         const json = await response.json();
         if(json.success)
         {
+          console.log(json.message);
+          tempBoards.push(newBoard);
+          setBoards(tempBoards);
           alert('board created')
           retrieveUser();
         }
-        
         else{
           console.log(json);
-      // Assuming the server sends a specific error message for duplicate titles . 
+          // Assuming the server sends a specific error message for duplicate titles . 
           if (json.error === 'Duplicate title') {
             alert('A board with this name already exists. Please choose a different name.');
           }
@@ -132,7 +133,9 @@ const Home = () => {
       };
     
       const removeBoard = async(id) => {
-        const index = boards.findIndex((item) => item.id === id);
+        // retrieveUser();
+        console.log("deleting this board " + id);
+        const index = boards.findIndex((item) => item.boardId === id);
 
         try {
           const response = await fetch('http://localhost:5000/api/deleteBoard',
@@ -164,16 +167,15 @@ const Home = () => {
 
         } catch (error) {
           console.error(error);
-          
         }
       };
     
       //add task 
-      const addCardHandler = async(id, title) => {
+      const addCardHandler = async(bid, title) => {
       try {
-        console.log(id);
+        console.log(bid);
         console.log(title)
-        const index = boards.findIndex((item) => item.id === id);
+        const index = boards.findIndex((item) => item.id === bid);
         if (index < 0) return;
         console.log(index);
     
@@ -224,7 +226,7 @@ const Home = () => {
             card_title: newCard.title,
             card_user:user_name
           })
-        }
+        } 
       )
       const json = await response.json();
       if (json.success) {
@@ -322,10 +324,10 @@ const Home = () => {
         <div className="app_boards">
           {boards.map((item) => (
             <Board
-              key={item.id}
+              key={item.boardId}
               board={item}
               addCard={addCardHandler}
-              removeBoard={() => removeBoard(item.id)}
+              removeBoard={() => removeBoard(item.boardId)}
               removeCard={removeCard}
               dragEnded={dragEnded}
               dragEntered={dragEntered}
