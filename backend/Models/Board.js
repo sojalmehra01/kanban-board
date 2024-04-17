@@ -27,7 +27,7 @@ const boardSchema = new mongoose.Schema({
    type: Boolean, 
    default: false,
  },
- baord_permissions: [{
+ board_permissions: [{
     userId: {
       type: String,
       // ref: 'User',

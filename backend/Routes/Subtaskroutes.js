@@ -7,6 +7,37 @@ const { validateFile } = require('../Subtask'); // Adjust the path as necessary
 const Task = require('../Models/Task');
 const rateLimit = require('express-rate-limit');
 
+
+router.post("/addCard/createSubtask", async (req, res) => {
+
+    //const { taskId, subtaskId } = req.params;
+
+    try {
+        if (!req.body.subtask_title) {
+            return res.status(400).send('Title is required');
+        }
+        
+        await Subtask.create({
+            cardId: req.body.cardId,
+            subtask_title: req.body.subtask_title, 
+            subtaskId: req.body.subtaskId, 
+        });
+
+        res.json({ success: true, message: "Subtask created" });
+    } catch (error) {
+        console.error("Error creating subtask:", error);
+        res.status(500).json({ success: false, error: "An error occurred while creating the subtask" });
+    }
+});
+
+
+
+
+
+
+
+
+
 // Configure multer storage
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
