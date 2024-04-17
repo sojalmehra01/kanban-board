@@ -28,12 +28,15 @@ router.post("/createBoard",
             board_user: req.body.board_user
          })
       res.json({success:true, message: "board successfully created"})
-      } catch (error) {
-         if (error.code === 11000) { // MongoDB duplicate key error code
-           res.status(400).json({success:false, error: 'Duplicate title' });
-         } else {
-            console.log(error);
-           res.status(500).json({success: false, error: 'An error occurred' });
+      } catch (error){
+         // console.log(error.errors.board_title.properties.type);
+         if(error.errors.board_title.properties.type==='unique')
+         {
+            res.status(500).json({success:false, error: 'duplicate title'});
+         }
+         else
+         {
+            res.status(500).json({success: false, error: 'An error occurred' });
          }
       }
    }   
