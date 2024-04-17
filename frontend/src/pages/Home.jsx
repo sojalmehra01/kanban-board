@@ -257,61 +257,67 @@ const Home = () => {
         setBoards(tempBoards);
       };
     
-  const addsubtaskhandler = async(bid,cid,title) => {
+//-------------------------------------------------------------------------------------------------------------------------------------//  
+  
+  const addsubtaskhandler = async(bid, cid, title) => {
     try {
+        const index = boards.findIndex((item) => item.boardId === bid);
+        if (index < 0) return;
 
-      if (index < 0) return;    
-      const tempBoards = [...boards];
-      const { data: { user } } = await supabase.auth.getUser()
+        const tempBoards = [...boards];
+        const { data: { user } } = await supabase.auth.getUser();
+        const userDetails = user;
+        console.log(userDetails);
 
-      let subtaskId = Date.now() + Math.random() * 2;
-      subtaskId = subtaskId.toFixed(1);
-      subtaskId = subtaskId*10;
-      console.log(subtaskId);
-      
-      let newSubtask = {
-        board_title: tempBoards[index].title,
-        cardId: cardId,
-        card_title: card_title,
-        subtaskId: subtaskId,
-        //subtask_title:title,     check if it is or not 
-        subtask_title: subtask_title,
-        
-        }
+        const cards = tempBoards[index].cards;
+        const cardIndex = cards.findIndex((item) => item.id === cid);
+
+        let subtaskId = Date.now() + Math.random() * 2;
+        subtaskId = subtaskId.toFixed(1);
+        subtaskId = subtaskId * 10;
+        console.log(subtaskId);
+
+        let newSubtask = {
+            board_title: tempBoards[index].title,
+            cardId: cid,
+            card_title: tempBoards[index].cards[cardIndex].title, 
+            subtaskId: subtaskId,
+            subtask_title: title,
+        };
 
         console.log(newSubtask);
 
-        const response = await fetch('http://localhost:5000/api/addCard/createSubtask',
-        {
-          method: 'POST',
-          headers: {
-          "Content-Type" : "application/json"              
-          },
-          body: JSON.stringify({
-            boardId: tempBoards[index]._id,
-            cardId: cardId,
-            card_title: newCard.title,
-            card_user:user_name
-          })
+        const response = await fetch('http://localhost:5000/api/addCard/createSubtask', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                // board_title: newSubtask.board_title,
+                // cardId: newSubtask.cardId,
+              // card_title: newSubtask.card_title,
+                board_title: tempBoards[index].title,
+                cardId: cardId,
+                card_title: card_title,
+                subtaskId: newSubtask.subtaskId,
+                subtask_title: newSubtask.subtask_title,
+            })
+        });
+
+        const json = await response.json();
+        if (json.success) {
+            tempBoards[index].cards[cardIndex].subtasks.push(newSubtask);
+            setBoards(tempBoards);
+            alert('Subtask added');
+        } else {
+            console.log(json.error);
         }
-      )
-      const index = boards.findIndex((item) => item.boardId === bid);
-      
-      const cardIndex = cards.findIndex((item) => item.id === cid);
+    } catch (error) {
+        console.log(error);
     }
-    catch (error) {
-      console.log(error);
-    }
-      }
-      
+};
 
-
-
-
-
-
-
-  
+//--------------------------------------------------------------------------------------------------------------------------------------//
   
       const dragEnded = (bid, cid) => {
         let s_boardIndex, s_cardIndex, t_boardIndex, t_cardIndex;
@@ -385,6 +391,7 @@ const Home = () => {
               addCard={addCardHandler}
               removeBoard={() => removeBoard(item.boardId)}
               removeCard={removeCard}
+              addsubtask={addsubtaskhandler} //new
               dragEnded={dragEnded}
               dragEntered={dragEntered}
               updateCard={updateCard}
