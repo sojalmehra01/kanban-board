@@ -257,6 +257,62 @@ const Home = () => {
         setBoards(tempBoards);
       };
     
+  const addsubtaskhandler = async(bid,cid,title) => {
+    try {
+
+      if (index < 0) return;    
+      const tempBoards = [...boards];
+      const { data: { user } } = await supabase.auth.getUser()
+
+      let subtaskId = Date.now() + Math.random() * 2;
+      subtaskId = subtaskId.toFixed(1);
+      subtaskId = subtaskId*10;
+      console.log(subtaskId);
+      
+      let newSubtask = {
+        board_title: tempBoards[index].title,
+        cardId: cardId,
+        card_title: card_title,
+        subtaskId: subtaskId,
+        //subtask_title:title,     check if it is or not 
+        subtask_title: subtask_title,
+        
+        }
+
+        console.log(newSubtask);
+
+        const response = await fetch('http://localhost:5000/api/addCard/createSubtask',
+        {
+          method: 'POST',
+          headers: {
+          "Content-Type" : "application/json"              
+          },
+          body: JSON.stringify({
+            boardId: tempBoards[index]._id,
+            cardId: cardId,
+            card_title: newCard.title,
+            card_user:user_name
+          })
+        }
+      )
+      const index = boards.findIndex((item) => item.boardId === bid);
+      
+      const cardIndex = cards.findIndex((item) => item.id === cid);
+    }
+    catch (error) {
+      console.log(error);
+    }
+      }
+      
+
+
+
+
+
+
+
+  
+  
       const dragEnded = (bid, cid) => {
         let s_boardIndex, s_cardIndex, t_boardIndex, t_cardIndex;
         s_boardIndex = boards.findIndex((item) => item.boardId === bid);
