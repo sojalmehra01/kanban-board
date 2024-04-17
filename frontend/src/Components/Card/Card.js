@@ -10,7 +10,7 @@ function Card(props) {
   const [showDropdown, setShowDropdown] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
-  const {boardId, id, title,board_title, card_user, date, tasks, labels } = props.card;
+  const {boardId, cardId, title,board_title, card_user, date, tasks, labels } = props.card;
 
   const formatDate = (value) => {
     if (!value) return "";
@@ -50,8 +50,8 @@ function Card(props) {
       <div
         className="card"
         draggable
-        onDragEnd={() => props.dragEnded(props.boardId, id)}
-        onDragEnter={() => props.dragEntered(props.boardId, id)}
+        onDragEnd={() => props.dragEnded(props.boardId, cardId)}
+        onDragEnter={() => props.dragEntered(props.boardId, cardId)}
         onClick={() => setShowModal(true)}
       >
         <div className="card_top">
@@ -75,7 +75,7 @@ function Card(props) {
                 class="board_dropdown"
                 onClose={() => setShowDropdown(false)}
               >
-                <p onClick={() => props.removeCard(props.boardId, id)}>
+                <p onClick={() => props.removeCard(props.boardId, cardId)}>
                   Delete Card
                 </p>
               </Dropdown>

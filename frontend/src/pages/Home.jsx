@@ -259,19 +259,19 @@ const Home = () => {
     
       const dragEnded = (bid, cid) => {
         let s_boardIndex, s_cardIndex, t_boardIndex, t_cardIndex;
-        s_boardIndex = boards.findIndex((item) => item.id === bid);
+        s_boardIndex = boards.findIndex((item) => item.boardId === bid);
         if (s_boardIndex < 0) return;
     
         s_cardIndex = boards[s_boardIndex]?.cards?.findIndex(
-          (item) => item.id === cid
+          (item) => item.cardId === cid
         );
         if (s_cardIndex < 0) return;
     
-        t_boardIndex = boards.findIndex((item) => item.id === targetCard.bid);
+        t_boardIndex = boards.findIndex((item) => item.boardId === targetCard.bid);
         if (t_boardIndex < 0) return;
     
         t_cardIndex = boards[t_boardIndex]?.cards?.findIndex(
-          (item) => item.id === targetCard.cid
+          (item) => item.cardId === targetCard.cid
         );
         if (t_cardIndex < 0) return;
     
