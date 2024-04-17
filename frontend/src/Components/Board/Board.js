@@ -35,9 +35,9 @@ function Board(props) {
       <div className="board_cards custom-scroll">
         {props.board?.cards?.map((item) => (
           <Card
-            key={item.id}
+            key={item.boardId}
             card={item}
-            boardId={props.board.id}
+            boardId={props.board.boardId}
             removeCard={props.removeCard}
             dragEntered={props.dragEntered}
             dragEnded={props.dragEnded}
@@ -49,7 +49,7 @@ function Board(props) {
           placeholder="Enter Card Title"
           displayClass="board_add-card"
           editClass="board_add-card_edit"
-          onSubmit={(value) => props.addCard(props.board?.id, value)}
+          onSubmit={(value) => props.addCard(props.board?.boardId, value)}
         />
       </div>
     </div>

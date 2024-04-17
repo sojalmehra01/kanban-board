@@ -86,7 +86,7 @@ const Home = () => {
         boardId = boardId*10;
         console.log(boardId);
 
-          const newBoard = {
+        let newBoard = {
           _id : "",
           boardId: boardId,
           title: name, 
@@ -173,11 +173,12 @@ const Home = () => {
       };
     
       //add task 
-      const addCardHandler = async(boardId, title) => {
+      const addCardHandler = async(id, title) => {
       try {
-        console.log(boardId);
+        console.log(id);
         console.log(title)
-        const index = boards.findIndex((item) => item.boardId === boardId);
+        const index = boards.findIndex((item) => item.boardId === id);
+        console.log(index);
         if (index < 0) return;
         console.log(index);
     
@@ -203,7 +204,7 @@ const Home = () => {
         cardId = cardId*10;
         console.log(cardId);
 
-        const newCard = {
+        let newCard = {
           board_id: tempBoards[index].boardId,
           cardId: cardId,
           title: title,
