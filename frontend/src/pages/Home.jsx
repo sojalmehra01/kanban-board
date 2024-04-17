@@ -47,9 +47,9 @@ const Home = () => {
       console.log(json);
       if (json.success) {
         console.log(json.boards);
-        // for (let i = 0; i < json.boards.length; i++){
-        //   boards[i]._id = json.boards[i]._id ; 
-        // }
+        for (let i = 0; i < json.boards.length; i++){
+          boards[i]._id = json.boards[i]._id ; 
+        }
       } else {
         console.log(json.message);
       }
@@ -75,7 +75,7 @@ const Home = () => {
         // console.log(user);
         // console.log(user.user_metadata.full_name);
         userDetails = user;
-        user_name = user.user_metadata.full_name;
+        user_name = user.user_metadata.full_name;                            
         // console.log(userDetails)
 
 
@@ -173,11 +173,11 @@ const Home = () => {
       };
     
       //add task 
-      const addCardHandler = async(bid, title) => {
+      const addCardHandler = async(boardId, title) => {
       try {
-        console.log(bid);
+        console.log(boardId);
         console.log(title)
-        const index = boards.findIndex((item) => item.id === bid);
+        const index = boards.findIndex((item) => item.boardId === boardId);
         if (index < 0) return;
         console.log(index);
     
@@ -209,9 +209,6 @@ const Home = () => {
           title: title,
           board_title: tempBoards[index].title,
           card_user: user_name,
-          labels: [],
-          date: "",
-          tasks: [],
         }
 
         console.log(newCard);
@@ -228,7 +225,7 @@ const Home = () => {
             card_title: newCard.title,
             card_user:user_name
           })
-        } 
+        }
       )
       const json = await response.json();
       if (json.success) {
