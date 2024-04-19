@@ -128,15 +128,29 @@ function CardInfo(props) {
     });
   };
 
-  const removeTask = (id) => {
-    const tasks = [...values.tasks];
+  // const removeTask = (id) => {
+  //   const tasks = [...values.tasks];
 
-    const tempTasks = tasks.filter((item) => item.id !== id);
-    setValues({
-      ...values,
-      tasks: tempTasks,
+  //   const tempTasks = tasks.filter((item) => item.id !== id);
+  //   setValues({
+  //     ...values,
+  //     tasks: tempTasks,
+  //   });
+  // };
+
+  const removesubtask = (id) => {
+    const tasks = [...values.tasks];
+    const updatedTasks = tasks.map(task => {
+        const updatedSubtasks = task.subtasks.filter(subtask => subtask.id !== id);
+        return { ...task, subtasks: updatedSubtasks };
     });
-  };
+
+    setValues({
+        ...values,
+        tasks: updatedTasks,
+    });
+};
+
 
   const updateTask = (id, value) => {
     const tasks = [...values.tasks];
@@ -280,7 +294,7 @@ function CardInfo(props) {
           <Editable
             text={"Add a Task"}
             placeholder="Enter task"
-            onSubmit={addTask}
+            onSubmit={addsubtaskhandler}
           />
         </div>
       </div>
