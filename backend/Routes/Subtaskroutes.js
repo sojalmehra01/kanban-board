@@ -1,17 +1,16 @@
-// SubtaskRoutes.js
-
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const { validateFile } = require('../Subtask'); // Adjust the path as necessary
+// const { validateFile } = require('../Subtask'); // Adjust the path as necessary
+const Subtask = require("../Models/Subtask")
 const Task = require('../Models/Task');
 const rateLimit = require('express-rate-limit');
+// const Subtask = require('../Models/Subtask');
 
 
-router.post("/addCard/createSubtask", async (req, res) => {
+router.post("/createSubtask", async (req, res) => {
 
     //const { taskId, subtaskId } = req.params;
-
     try {
         if (!req.body.subtask_title) {
             return res.status(400).send('Title is required');

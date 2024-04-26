@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { supabase } from "../../../Supabaseclient";
 import {
   Calendar,
   CheckSquare,
@@ -58,18 +59,19 @@ function CardInfo(props) {
     });
   };
 //-------------------------------------------------------
-  const addsubtaskhandler = async(bid, cid, title) => {
+  const addsubtaskhandler = async(title) => {
     try {
-        const index = boards.findIndex((item) => item.boardId === bid);
-        if (index < 0) return;
+        // const index = boards.findIndex((item) => item.boardId === bid);
+        // if (index < 0) return;
+        console.log(title);
 
-        const tempBoards = [...boards];
+        // const tempBoards = [...boards];
         const { data: { user } } = await supabase.auth.getUser();
         const userDetails = user;
         console.log(userDetails);
 
-        const cards = tempBoards[index].cards;
-        const cardIndex = cards.findIndex((item) => item.id === cid);
+        // const cards = tempBoards[index].cards;
+        console.log(values);
 
         let subtaskId = Date.now() + Math.random() * 2;
         subtaskId = subtaskId.toFixed(1);
@@ -77,16 +79,16 @@ function CardInfo(props) {
         console.log(subtaskId);
 
         let newSubtask = {
-            board_title: tempBoards[index].title,
-            cardId: cid,
-            card_title: tempBoards[index].cards[cardIndex].title, 
+            // board_title: tempBoards[index].title,
+            cardId: values.cardId,
+            card_title: values.title, 
             subtaskId: subtaskId,
             subtask_title: title,
         };
 
         console.log(newSubtask);
 
-        const response = await fetch('http://localhost:5000/api/addCard/createSubtask', {
+        const response = await fetch('http://localhost:5000/api/createSubtask', {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json"
@@ -95,18 +97,22 @@ function CardInfo(props) {
                 // board_title: newSubtask.board_title,
                 // cardId: newSubtask.cardId,
               // card_title: newSubtask.card_title,
-                board_title: tempBoards[index].title,
-                cardId: cardId,
-                card_title: card_title,
-                subtaskId: newSubtask.subtaskId,
+                // board_title: tempBoards[index].title,
+                cardId: newSubtask.cardId,
+                card_title: newSubtask.card_title,
+                subtaskId:subtaskId,
                 subtask_title: newSubtask.subtask_title,
             })
         });
 
         const json = await response.json();
         if (json.success) {
-            tempBoards[index].cards[cardIndex].subtasks.push(newSubtask);
-            setBoards(tempBoards);
+          console.log(typeof(values.tasks))
+          console.log(values.tasks);
+          setValues({
+            ...values,
+            tasks: [...values.tasks, newSubtask],
+          });
             alert('Subtask added');
         } else {
             console.log(json.error);
@@ -287,14 +293,14 @@ function CardInfo(props) {
                   }
                 />
                 <p className={item.completed ? "completed" : ""}>{item.text}</p>
-                <Trash onClick={() => removeTask(item.id)} />
+                <Trash onClick={() => removesubtask(item.id)} />
               </div>
             ))}
           </div>
           <Editable
             text={"Add a Task"}
             placeholder="Enter task"
-            onSubmit={addsubtaskhandler}
+            onSubmit={(value) =>{addsubtaskhandler(value)}}
           />
         </div>
       </div>

@@ -210,6 +210,7 @@ const Home = () => {
           title: title,
           board_title: tempBoards[index].title,
           card_user: user_name,
+          tasks: []
         }
 
         console.log(newCard);
@@ -329,7 +330,7 @@ const Home = () => {
               addCard={addCardHandler}
               removeBoard={() => removeBoard(item.boardId)}
               removeCard={removeCard}
-              addsubtask={addsubtaskhandler} //new
+              // addsubtask={addsubtaskhandler} //new
               dragEnded={dragEnded}
               dragEntered={dragEntered}
               updateCard={updateCard}
