@@ -210,7 +210,7 @@ const Home = () => {
           title: title,
           board_title: tempBoards[index].title,
           card_user: user_name,
-          tasks: []
+          tasks: [{}]
         }
 
         console.log(newCard);

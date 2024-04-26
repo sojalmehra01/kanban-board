@@ -86,7 +86,7 @@ function CardInfo(props) {
             subtask_title: title,
         };
 
-        console.log(newSubtask);
+        console.log('subtask => ', newSubtask);
 
         const response = await fetch('http://localhost:5000/api/createSubtask', {
             method: 'POST',
@@ -107,11 +107,12 @@ function CardInfo(props) {
 
         const json = await response.json();
         if (json.success) {
-          console.log(values.tasks);
-          setValues({
-            ...values,
-            tasks: [...values.tasks, newSubtask],
-          });
+          // setValues({
+            //   ...values,
+            //   tasks: [...values.tasks, newSubtask],
+            // });
+            addTask(newSubtask);
+            console.log(values.tasks);
             alert('Subtask added');
         } else {
             console.log(json.error);
@@ -122,14 +123,9 @@ function CardInfo(props) {
 };
 //-----------------------------------------------------
   const addTask = (value) => {
-    const task = {
-      id: Date.now() + Math.random() * 2,
-      completed: false,
-      text: value,
-    };
     setValues({
       ...values,
-      tasks: [...values.tasks, task],
+      tasks: [...values.tasks, value],
     });
   };
 
@@ -283,16 +279,16 @@ function CardInfo(props) {
           </div>
           <div className="cardinfo_box_task_list">
             {values.tasks?.map((item) => (
-              <div key={item.id} className="cardinfo_box_task_checkbox">
+              <div key={item.subtaskId} className="cardinfo_box_task_checkbox">
                 <input
                   type="checkbox"
                   defaultChecked={item.completed}
                   onChange={(event) =>
-                    updateTask(item.id, event.target.checked)
+                    updateTask(item.subtaskId, event.target.checked)
                   }
                 />
-                <p className={item.completed ? "completed" : ""}>{item.text}</p>
-                <Trash onClick={() => removesubtask(item.id)} />
+                <p className={item.completed ? "completed" : ""}>{item.subtask_title}</p>
+                <Trash onClick={() => removesubtask(item.subtaskId)} />
               </div>
             ))}
           </div>
