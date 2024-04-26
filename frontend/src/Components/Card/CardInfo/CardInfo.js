@@ -107,7 +107,6 @@ function CardInfo(props) {
 
         const json = await response.json();
         if (json.success) {
-          console.log(typeof(values.tasks))
           console.log(values.tasks);
           setValues({
             ...values,
