@@ -288,7 +288,15 @@ function CardInfo(props) {
                   }
                 />
                 <p className={item.completed ? "completed" : ""}>{item.subtask_title}</p>
+
+                <div className="subtask-actions">
+                  <input className="subtask-chat" type="text" placeholder="Chat" />
+                  <button className="send">send</button>
+                  <button className="raise-query">Raise a query</button>
+                  <button className="atach-doc">attachment</button>
+                </div>
                 <Trash onClick={() => removesubtask(item.subtaskId)} />
+                
               </div>
             ))}
           </div>

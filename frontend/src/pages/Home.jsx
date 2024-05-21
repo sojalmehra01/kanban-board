@@ -245,13 +245,16 @@ const Home = () => {
       };
     
       const removeCard = (bid, cid) => {
-        const index = boards.findIndex((item) => item.id === bid);
-        if (index < 0) return;
+        const index = boards.findIndex((item) => item.boardId === bid);
+        if (index < 0) {
+          console.log('index is zero');
+          return;
+        };
     
         const tempBoards = [...boards];
         const cards = tempBoards[index].cards;
     
-        const cardIndex = cards.findIndex((item) => item.id === cid);
+        const cardIndex = cards.findIndex((item) => item.cardId === cid);
         if (cardIndex < 0) return;
     
         cards.splice(cardIndex, 1);
