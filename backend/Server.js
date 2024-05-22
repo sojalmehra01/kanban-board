@@ -1,19 +1,31 @@
 const express = require('express');
 const connectDB = require('./DB/db');
 const cors = require('cors');
-const app = express();
-// const mongoose = require('mongoose');
-// const http = require('http');
-// const cookieHandler = require('../CookieHandler'); // Import cookieHandler
-// const server = http.createServer(app);
-// const User = require('./DB/User');
-// const authRoutes = require('./Routes/Auth');
-// const Boardroutes = require('./Routes/Boardroutes');
-// const Taskroutes = require('./Routes/Taskroutes');
-// const protectedRoutes = require('./Routes/Protectedroutes'); // Make sure this path is correct
-
-
+const app = require('express')();
 app.use(cors());
+const users = {} 
+const server = require('http').createServer(app);
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "*",
+  },
+});
+
+io.on('connection', (socket) => {
+    console.log('user connected');
+    socket.on('new-user-joined', name => {
+        console.log("new user ", name);
+        users[socket.id] = name;
+        socket.broadcast.emit('user-joined', name);
+    });
+
+    socket.on('send', message => {
+        console.log("messsage from hopscottch");
+        console.log(message);
+        socket.broadcast.emit('receive', { message: message, name: users[socket.id] })
+    });
+ });
+
 
 // Middleware
 app.use(express.json());
@@ -34,8 +46,6 @@ app.use(express.static(path.join(__dirname + "/public")));
 // app.use('/protected', protectedRoutes); // Use protected routes
 
 // Include Socket.IO configuration
-// const io = require('./Socket')(server);
-
 
 
 // Authentication code
@@ -53,4 +63,38 @@ connectDB();
 
 // Start the server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// const mongoose = require('mongoose');
+// const http = require('http');
+// const cookieHandler = require('../CookieHandler'); // Import cookieHandler
+//const server = http.createServer(app);
+// const User = require('./DB/User');
+// const authRoutes = require('./Routes/Auth');
+// const Boardroutes = require('./Routes/Boardroutes');
+// const Taskroutes = require('./Routes/Taskroutes');
+// const protectedRoutes = require('./Routes/Protectedroutes'); // Make sure this path is correct
+

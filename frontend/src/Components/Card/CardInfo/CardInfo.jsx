@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import io from 'socket.io-client';
+
 import { supabase } from "../../../Supabaseclient";
 import {
   Calendar,
@@ -186,6 +188,32 @@ function CardInfo(props) {
     if (props.updateCard) props.updateCard(props.boardId, values.id, values);
   }, [values]);
 
+  //----------------------------------------------------------------------------
+  const [message, setMessage] = useState("");
+  const socket = io("http://localhost:8000"); // Connect to your Socket.IO server
+
+  useEffect(() => {
+    // Listen for messages from the server
+    socket.on("message", (data) => {
+      console.log(data); // Process the message data
+    });
+
+    // Cleanup function to disconnect the socket when the component unmounts
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
+  //-----------------------------------------------------------
+const sendButtonHandle = (e) =>{
+e.preventDefault()
+  }
+  
+  const sendMessage = () => {
+        socket.emit('send', message);
+        setMessage('');
+  };
+  
   return (
     <Modal onClose={props.onClose}>
       <div className="cardinfo">
@@ -290,8 +318,18 @@ function CardInfo(props) {
                 <p className={item.completed ? "completed" : ""}>{item.subtask_title}</p>
 
                 <div className="subtask-actions">
-                  <input className="subtask-chat" type="text" placeholder="Chat" />
-                  <button className="send">send</button>
+                  <form action="#" id="send-container">
+                  <input
+                  id="messageInp"
+                  className="subtask-chat"
+                  name="messageInp"
+                  type="text"
+                  placeholder="Chat"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  />
+                </form>
+                  <button className="send" onClick={sendButtonHandle}>send</button>
                   <button className="raise-query">Raise a query</button>
                   <button className="atach-doc">attachment</button>
                 </div>
