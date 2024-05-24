@@ -331,9 +331,7 @@ e.preventDefault()
                 <div className="subtask-actions">
                   <button onClick={()=>{setIsChatModalOpen(true)}}>chat</button>
                   <Chatmodal isOpen={isChatModalOpen} onClose={toggleOverlay}></Chatmodal>
-                  <button className="send" onClick={sendButtonHandle}>send</button>
                   <button className="raise-query">Raise a query</button>
-                  <button className="atach-doc">attachment</button>
                 </div>
                 <Trash onClick={() => removesubtask(item.subtaskId)} />
                 
