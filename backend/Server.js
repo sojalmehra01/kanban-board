@@ -13,18 +13,22 @@ const io = require("socket.io")(server, {
 });
 
 io.on('connection', (socket) => {
-    console.log('user connected');
-    socket.on('new-user-joined', name => {
-        console.log("new user ", name);
-        users[socket.id] = name;
-        socket.broadcast.emit('user-joined', name);
-    });
+
+  if (!users[socket.id]) {
+      console.log('user connected');
+        socket.on('new-user-joined', name => {
+            console.log("new user ", name);
+            users[socket.id] = name;
+            socket.broadcast.emit('user-joined', name);
+        });
+  }
+  
     socket.on('disconnect', () => {
       console.log('user disconnected');
     });
 
     socket.on('send', message => {
-        console.log("messsage from hopscottch");
+        console.log("messsage from User");
         console.log(message);
         socket.broadcast.emit('receive', { message: message, name: users[socket.id] })
     });

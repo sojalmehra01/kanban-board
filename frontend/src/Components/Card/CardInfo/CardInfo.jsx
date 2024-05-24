@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import io from 'socket.io-client';
 // import "./Client.js"
 
@@ -23,6 +23,8 @@ import "./CardInfo.css";
 function CardInfo(props) {  
 
   const [isChatModalOpen, setIsChatModalOpen] = useState(false);
+  const messageInputRef = useRef(null);
+  const [messages, setMessages] = useState([]); // State for holding the current message
 
   const toggleOverlay = () => {
     setIsChatModalOpen(!isChatModalOpen);
@@ -216,13 +218,18 @@ function CardInfo(props) {
   }, []);
 
   //-----------------------------------------------------------
-const sendButtonHandle = (e) =>{
-e.preventDefault()
-  }
   
-  const sendMessage = () => {
-        socket.emit('send', message);
-        setMessage('');
+  // const sendMessage = () => {
+  //       socket.emit('send', message);
+  //       setMessage('');
+  // };
+   const handleSubmitMessage = () => {
+    const trimmedMessage = message.trim();
+    if (trimmedMessage.length > 0) {
+      // Assuming you have a socket instance available
+      socket.emit('send', trimmedMessage);
+      setMessage(''); // Clear the input after sending the message
+    }
   };
   
   return (
@@ -329,8 +336,20 @@ e.preventDefault()
                 <p className={item.completed ? "completed" : ""}>{item.subtask_title}</p>
 
                 <div className="subtask-actions">
-                  <button onClick={()=>{setIsChatModalOpen(true)}}>chat</button>
-                  <Chatmodal isOpen={isChatModalOpen} onClose={toggleOverlay}></Chatmodal>
+                  <button onClick={() => {setIsChatModalOpen(true); /*messageInputRef.current.focus();*/}}>Chat</button>
+                  <Chatmodal isOpen={isChatModalOpen} onClose={toggleOverlay}>
+                     <div className="chat-box">
+                      <input
+                        ref={messageInputRef}
+                        id="messageInp"
+                        type="text"
+                        placeholder="Type your message..."
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)}
+                        />
+                      <button onClick={handleSubmitMessage}>Send</button>
+                    </div>
+                    </Chatmodal>
                   <button className="raise-query">Raise a query</button>
                 </div>
                 <Trash onClick={() => removesubtask(item.subtaskId)} />
