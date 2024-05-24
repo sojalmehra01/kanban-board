@@ -1,3 +1,4 @@
+const http = require('http');
 const express = require('express');
 const connectDB = require('./DB/db');
 const cors = require('cors');
@@ -17,6 +18,9 @@ io.on('connection', (socket) => {
         console.log("new user ", name);
         users[socket.id] = name;
         socket.broadcast.emit('user-joined', name);
+    });
+    socket.on('disconnect', () => {
+      console.log('user disconnected');
     });
 
     socket.on('send', message => {
@@ -89,7 +93,6 @@ server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 
 // const mongoose = require('mongoose');
-// const http = require('http');
 // const cookieHandler = require('../CookieHandler'); // Import cookieHandler
 //const server = http.createServer(app);
 // const User = require('./DB/User');

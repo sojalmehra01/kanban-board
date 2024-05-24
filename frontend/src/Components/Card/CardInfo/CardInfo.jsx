@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import io from 'socket.io-client';
+// import "./Client.js"
 
 import { supabase } from "../../../Supabaseclient";
 import {
@@ -17,7 +18,12 @@ import Editable from "../../Editabled/Editable";
 
 import "./CardInfo.css";
 
+
 function CardInfo(props) {  
+
+  
+
+
   const colors = [
     "#a8193d",
     "#4fcc25",
@@ -190,7 +196,7 @@ function CardInfo(props) {
 
   //----------------------------------------------------------------------------
   const [message, setMessage] = useState("");
-  const socket = io("http://localhost:8000"); // Connect to your Socket.IO server
+  const socket = io("http://localhost:5000"); // Connect to your Socket.IO server
 
   useEffect(() => {
     // Listen for messages from the server

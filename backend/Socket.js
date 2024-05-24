@@ -22,7 +22,7 @@
 // };
 
 export const io = require('socket.io')(8000)
-const PORT = process.env.PORT || 8000; // Using environment variable or fallback to 8000
+const PORT = process.env.PORT || 5000; // Using environment variable or fallback to 8000
 
 io.on('connection', socket => {
     

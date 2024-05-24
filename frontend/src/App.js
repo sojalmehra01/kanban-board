@@ -7,6 +7,7 @@ import Navbar from "./Components/navbar/Navbar";
 import { useEffect, useState } from "react";
 import Error from "./pages/Error";
 
+
 function App() {
 
 
