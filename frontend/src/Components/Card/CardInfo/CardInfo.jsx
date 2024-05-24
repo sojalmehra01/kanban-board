@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import io from 'socket.io-client';
 // import "./Client.js"
 
+
 import { supabase } from "../../../Supabaseclient";
 import {
   Calendar,
@@ -12,7 +13,7 @@ import {
   Type,
   X,
 } from "react-feather";
-
+import Chatmodal from "../../../chat-window/Chatmodal";
 import Modal from "../../Modal/Modal";
 import Editable from "../../Editabled/Editable";
 
@@ -21,7 +22,11 @@ import "./CardInfo.css";
 
 function CardInfo(props) {  
 
-  
+  const [isChatModalOpen, setIsChatModalOpen] = useState(false);
+
+  const toggleOverlay = () => {
+    setIsChatModalOpen(!isChatModalOpen);
+  };
 
 
   const colors = [
@@ -324,17 +329,8 @@ e.preventDefault()
                 <p className={item.completed ? "completed" : ""}>{item.subtask_title}</p>
 
                 <div className="subtask-actions">
-                  <form action="#" id="send-container">
-                  <input
-                  id="messageInp"
-                  className="subtask-chat"
-                  name="messageInp"
-                  type="text"
-                  placeholder="Chat"
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  />
-                </form>
+                  <button onClick={()=>{setIsChatModalOpen(true)}}>chat</button>
+                  <Chatmodal isOpen={isChatModalOpen} onClose={toggleOverlay}></Chatmodal>
                   <button className="send" onClick={sendButtonHandle}>send</button>
                   <button className="raise-query">Raise a query</button>
                   <button className="atach-doc">attachment</button>
