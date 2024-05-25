@@ -20,7 +20,24 @@ import Editable from "../../Editabled/Editable";
 import "./CardInfo.css";
 
 
-function CardInfo(props) {  
+function CardInfo(props) {
+
+  const [username, setUsername] = useState("");
+  const [room, setRoom] = useState("");
+  const [showChat, setShowChat] = useState(false);
+
+  const joinRoom = async() => {
+
+    const { data: { user } } = await supabase.auth.getUser()
+
+    setUsername(user.user_metadata.full_name)
+    values && setRoom(values.cardId);
+
+    if (username !== "" && room !== "") {
+      socket.emit("join_room", room);
+      setShowChat(true);
+    }
+  };
 
   const [isChatModalOpen, setIsChatModalOpen] = useState(false);
   const messageInputRef = useRef(null);
@@ -246,6 +263,22 @@ function CardInfo(props) {
             placeholder="Enter Title"
             onSubmit={updateTitle}
           />
+          <button onClick={() => {setIsChatModalOpen(true); 
+                    }} className="chat-button">chat</button>
+          <Chatmodal
+          socket={socket} username={username} room={room} isOpen={isChatModalOpen} onClose={toggleOverlay}>
+                     <div className="chat-box">
+                      <input
+                        ref={messageInputRef}
+                        id="messageInp"
+                        type="text"
+                        placeholder="Type your message..."
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)}
+                        />
+                      <button onClick={handleSubmitMessage}>Send</button>
+                    </div>
+          </Chatmodal>
         </div>
 
         <div className="cardinfo_box">
@@ -284,7 +317,7 @@ function CardInfo(props) {
               <label
                 key={index}
                 style={{ backgroundColor: item.color, color: "#fff" }}
-              >
+                >
                 {item.text}
                 <X onClick={() => removeLabel(item)} />
               </label>
@@ -336,20 +369,7 @@ function CardInfo(props) {
                 <p className={item.completed ? "completed" : ""}>{item.subtask_title}</p>
 
                 <div className="subtask-actions">
-                  <button onClick={() => {setIsChatModalOpen(true); /*messageInputRef.current.focus();*/}}>Chat</button>
-                  <Chatmodal isOpen={isChatModalOpen} onClose={toggleOverlay}>
-                     <div className="chat-box">
-                      <input
-                        ref={messageInputRef}
-                        id="messageInp"
-                        type="text"
-                        placeholder="Type your message..."
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                        />
-                      <button onClick={handleSubmitMessage}>Send</button>
-                    </div>
-                    </Chatmodal>
+                  
                   <button className="raise-query">Raise a query</button>
                 </div>
                 <Trash onClick={() => removesubtask(item.subtaskId)} />

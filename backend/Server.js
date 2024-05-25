@@ -3,36 +3,33 @@ const express = require('express');
 const connectDB = require('./DB/db');
 const cors = require('cors');
 const app = require('express')();
-app.use(cors());
-const users = {} 
 const server = require('http').createServer(app);
-const io = require("socket.io")(server, {
+const { Server } = require("socket.io");
+
+const io = new Server(server, {
   cors: {
-    origin: "*",
+    origin: "http://localhost:5000",
+    methods: ["GET", "POST"],
   },
 });
+app.use(cors());
 
-io.on('connection', (socket) => {
+io.on("connection", (socket) => {
+  console.log(`User Connected: ${socket.id}`);
 
-  if (!users[socket.id]) {
-      console.log('user connected');
-        socket.on('new-user-joined', name => {
-            console.log("new user ", name);
-            users[socket.id] = name;
-            socket.broadcast.emit('user-joined', name);
-        });
-  }
-  
-    socket.on('disconnect', () => {
-      console.log('user disconnected');
-    });
+  socket.on("join_room", (data) => {
+    socket.join(data);
+    console.log(`User with ID: ${socket.id} joined room: ${data}`);
+  });
 
-    socket.on('send', message => {
-        console.log("messsage from User");
-        console.log(message);
-        socket.broadcast.emit('receive', { message: message, name: users[socket.id] })
-    });
- });
+  socket.on("send_message", (data) => {
+    socket.to(data.room).emit("receive_message", data);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("User Disconnected", socket.id);
+  });
+});
 
 
 // Middleware

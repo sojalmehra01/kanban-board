@@ -137,3 +137,17 @@
     font-size: 1rem;
     padding: 10px;
 }
+.chat-button{
+    width: 100px;
+    height: 40px;
+    border: none;
+    color: black;
+    font-weight: 500;
+    background-color:#ddd;
+    border-radius: 5px;
+    transition:ease-in-out 0.2s ;
+}
+.chat-button:hover{
+    cursor: pointer;
+    background-color: #cecdcd;
+}
