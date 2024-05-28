@@ -5,6 +5,7 @@ const cors = require('cors');
 const app = require('express')();
 const server = require('http').createServer(app);
 const { Server } = require("socket.io");
+const Messageroutes = require('./Routes/Messageroutes');
 
 const io = new Server(server, {
   cors: {
@@ -42,8 +43,10 @@ app.use("/api", require("./Routes/Boardroutes.js"))
 app.use("/api", require("./Routes/Taskroutes.js"))
 app.use("/api", require("./Routes/Subtaskroutes.js"))
 
-// app.use('/boards', Boardroutes);
-// app.use('/tasks', Taskroutes);
+app.use("/" , require("./Routes/Messageroutes.js"))//added
+
+app.post('/messages', Messageroutes.createMessage);
+app.get('/messages', Messageroutes.getAllMessages);
 
 const path = require("path");
 app.use(express.static(path.join(__dirname + "/public")));
