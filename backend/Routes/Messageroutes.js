@@ -4,21 +4,20 @@ const Message = require('../Models/Chat');
 
 router.post('/messages', async (req, res) => {
     const { message, sender, receiver } = req.body;
-
+    
     // Validate the request body
     if (!message || !sender || !receiver) {
         return res.status(400).json({ message: "Please provide message, sender, and receiver." });
     }
-    const newMessage = new Message({
-        Message: {
-            message,
-            sender,
-            receiver,
-            timestamp: new Date(),
-        }
-    });
-
     try {
+        const newMessage = new Message({
+            Message: {
+                message,
+                sender,
+                receiver,
+                timestamp: new Date(),
+            }
+        });
         await newMessage.save();
         res.status(201).send(newMessage);
     } catch (err) {

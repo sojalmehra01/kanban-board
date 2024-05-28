@@ -125,6 +125,9 @@
   padding: 10px;
   display: flex;
 }
+.chat-body{
+  overflow-y: scroll;
+}
 
 .chat-window .chat-body .message .message-content {
   width: auto;

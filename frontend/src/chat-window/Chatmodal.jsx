@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 // import ScrollToBottom from "react-scroll-to-bottom";
 import "./chat-modal.css"
 
 const Chatmodal = ({ isOpen, socket, username, room }) => {
+
+  const message_ref = useRef(null);
 
   const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
@@ -23,6 +25,9 @@ const Chatmodal = ({ isOpen, socket, username, room }) => {
       setMessageList((list) => [...list, messageData]);
       setCurrentMessage("");
     }
+
+
+
   };
 
   useEffect(() => {
@@ -30,6 +35,10 @@ const Chatmodal = ({ isOpen, socket, username, room }) => {
       setMessageList((list) => [...list, data]);
     });
   }, [socket]);
+
+  useEffect(()=>{
+    message_ref.current?.scrollIntoView();
+  },[messageList])
 
   return (
     <>
@@ -43,8 +52,8 @@ const Chatmodal = ({ isOpen, socket, username, room }) => {
              {messageList.map((messageContent) => {
                return (
                  <div
-                   className="message"
-                   id={username === messageContent.author ? "you" : "other"}
+                 className="message"
+                 id={username === messageContent.author ? "you" : "other"}
                  >
                    <div>
                      <div className="message-content">
@@ -59,6 +68,7 @@ const Chatmodal = ({ isOpen, socket, username, room }) => {
                );
              })}
            {/* </ScrollToBottom> */}
+                 <div ref={message_ref}/>
          </div>
          <div className="chat-footer">
            <input

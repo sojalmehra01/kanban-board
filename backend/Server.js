@@ -43,10 +43,10 @@ app.use("/api", require("./Routes/Boardroutes.js"))
 app.use("/api", require("./Routes/Taskroutes.js"))
 app.use("/api", require("./Routes/Subtaskroutes.js"))
 
-app.use("/" , require("./Routes/Messageroutes.js"))//added
+app.use("/api" , require("./Routes/Messageroutes.js"))//added
 
-app.post('/messages', Messageroutes.createMessage);
-app.get('/messages', Messageroutes.getAllMessages);
+app.post('/messages', ()=>{Messageroutes.createMessage});
+app.get('/messages', ()=>{Messageroutes.getAllMessages});
 
 const path = require("path");
 app.use(express.static(path.join(__dirname + "/public")));
