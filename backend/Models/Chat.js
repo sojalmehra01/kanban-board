@@ -7,8 +7,8 @@ const MessageSchema = new mongoose.Schema({
     timestamp: { type: Date, default: Date.now }
 });
 
-const ChatSchema = new mongoose.Schema({
-    Message: MessageSchema
-});
+// const ChatSchema = new mongoose.Schema({
+//     Message: MessageSchema
+// });
 
-module.exports = mongoose.model('Chat', ChatSchema);
+module.exports = mongoose.model('Message', MessageSchema);

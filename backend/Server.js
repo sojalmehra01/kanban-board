@@ -7,13 +7,14 @@ const server = require('http').createServer(app);
 const { Server } = require("socket.io");
 const Messageroutes = require('./Routes/Messageroutes');
 
+app.use(cors());
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5000",
+    origin: "*",
     methods: ["GET", "POST"],
   },
 });
-app.use(cors());
+
 
 io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
