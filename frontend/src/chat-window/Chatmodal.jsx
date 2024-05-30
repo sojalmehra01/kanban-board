@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
+import { supabase } from "../Supabaseclient";
 // import ScrollToBottom from "react-scroll-to-bottom";
 import "./chat-modal.css"
 
@@ -9,21 +10,66 @@ const Chatmodal = ({ isOpen, socket, username, room }) => {
   const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
 
-  const sendMessage = async () => {
-    if (currentMessage !== "") {
-      const messageData = {
-        room: room,
-        author: username,
-        message: currentMessage,
-        time:
-          new Date(Date.now()).getHours() +
-          ":" +
-          new Date(Date.now()).getMinutes(),
-      };
+  let userDetails = {};
+  let user_name = '';
 
-      await socket.emit("send_message", messageData);
-      setMessageList((list) => [...list, messageData]);
-      setCurrentMessage("");
+  const retrieveUser = async() =>{
+    const { data: { user } } = await supabase.auth.getUser()
+      userDetails = user;
+      user_name = user.user_metadata.full_name;
+    }
+    useEffect(()=>{
+      retrieveUser();
+    },[])
+
+  const sendMessage = async () => {
+
+    try{
+      if(!user_name)
+        {
+          await retrieveUser();
+          if (currentMessage !== "") {
+            const messageData = {
+              room: "testing",
+              author: user_name,
+              message: currentMessage,
+              time: 
+                new Date(Date.now()).getHours() +
+                ":" +
+                new Date(Date.now()).getMinutes(),
+            };
+            console.log(typeof(messageData.author))
+            console.log(messageData)
+            const response = await fetch("http://localhost:5000/api/createMessage", {
+              method: "POST", 
+              headers:{
+                "Content-Type":"application/json"
+              }, 
+              body: JSON.stringify({
+                room: messageData.room, 
+                author: messageData.author, 
+                message: messageData.message,
+                time: messageData.time
+              })
+            })
+    
+            const json = await response.json();
+            if(json.success){
+              console.log(json.message)
+              setMessageList((list) => [...list, messageData]);
+              await socket.emit("send_message", messageData);
+              setCurrentMessage("");
+            }
+            else
+            {
+              alert("Message not sent! Please try again!");
+        }
+
+        }
+      }
+    }
+    catch(error){
+      alert(error);
     }
 
 

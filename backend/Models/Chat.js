@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
 const MessageSchema = new mongoose.Schema({
+    room: String,
+    author: String,
     message: String,
-    sender: String,
-    receiver: String,
-    timestamp: { type: Date, default: Date.now }
+    time: String,
 });
 
 // const ChatSchema = new mongoose.Schema({

@@ -34,4 +34,22 @@ router.get('/messages', async (req, res) => {
     }
 });
 
+
+router.post("/createMessage", 
+    async(req,res)=>{
+        try{
+            await Message.create({
+                room: req.body.room, 
+                author: req.body.author, 
+                message: req.body.message, 
+                time: req.body.time,
+            })
+            res.json({success:true, message: "message successfully sent"})
+        }
+        catch(error){
+            res.status(500).json({success: false, error: "an error occured"});
+        }
+    }
+)
+
 module.exports = router;
