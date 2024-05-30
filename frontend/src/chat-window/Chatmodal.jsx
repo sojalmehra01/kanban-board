@@ -17,7 +17,37 @@ const Chatmodal = ({ isOpen, socket, username, room }) => {
     const { data: { user } } = await supabase.auth.getUser()
       userDetails = user;
       user_name = user.user_metadata.full_name;
+      retrieveChats();
     }
+
+    const retrieveChats = async()=>{
+      try{
+        const response = await fetch("http://localhost:5000/api/getMessages", 
+          {
+            method: "POST", 
+            headers:{
+              "Content-Type":"application/json"
+            }, 
+            body: JSON.stringify({
+              author: user_name,
+            })
+          }
+        )
+
+        const json = await response.json();
+        if(json.success)
+          {
+            console.log(json.messages);
+            setMessageList(json.messages);
+          }
+      }
+      catch(error)
+      {
+        console.log(error);
+        alert("error retrieving chats")
+      }
+    }
+
     useEffect(()=>{
       retrieveUser();
     },[])

@@ -25,14 +25,14 @@ router.post('/messages', async (req, res) => {
     }
 });
 
-router.get('/messages', async (req, res) => {
-    try {
-        const allMessages = await Message.find({});
-        res.send(allMessages);
-    } catch (err) {
-        res.status(500).json({ message: "Error getting the messages" });
-    }
-});
+// router.get('/messages', async (req, res) => {
+//     try {
+//         const allMessages = await Message.find({});
+//         res.send(allMessages);
+//     } catch (err) {
+//         res.status(500).json({ message: "Error getting the messages" });
+//     }
+// });
 
 
 router.post("/createMessage", 
@@ -48,6 +48,23 @@ router.post("/createMessage",
         }
         catch(error){
             res.status(500).json({success: false, error: "an error occured"});
+        }
+    }
+)
+
+router.post("/getMessages", 
+    async(req,res)=>{
+        try{
+            const user_name = req.body.author; 
+            console.log("retrieving messages of ", user_name);
+
+            const allMessages = await Message.find({
+                author: user_name,
+            })
+            res.json({success: true, message: "messages successfully fetched", messages: allMessages})
+        }
+        catch(error){
+            res.status(400).json({message: "an error occurred", error: error});
         }
     }
 )
