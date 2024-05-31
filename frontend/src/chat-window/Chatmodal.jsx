@@ -3,20 +3,24 @@ import { supabase } from "../Supabaseclient";
 // import ScrollToBottom from "react-scroll-to-bottom";
 import "./chat-modal.css"
 
-const Chatmodal = ({ isOpen, socket, username, room }) => {
+const Chatmodal = ({ values, isOpen, socket, username, room }) => {
 
   const message_ref = useRef(null);
 
   const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
 
+  const cardDetails = values;
+  const cardId = values.cardId;
+  console.log("i'm card id ", cardId)
+
   let userDetails = {};
-  let user_name = '';
+  let user_email = '';
 
   const retrieveUser = async() =>{
     const { data: { user } } = await supabase.auth.getUser()
       userDetails = user;
-      user_name = user.user_metadata.full_name;
+      user_email = user.user_metadata.email;
       retrieveChats();
     }
 
@@ -29,7 +33,8 @@ const Chatmodal = ({ isOpen, socket, username, room }) => {
               "Content-Type":"application/json"
             }, 
             body: JSON.stringify({
-              author: user_name,
+              room: cardId, 
+              author: user_email,
             })
           }
         )
@@ -55,13 +60,13 @@ const Chatmodal = ({ isOpen, socket, username, room }) => {
   const sendMessage = async () => {
 
     try{
-      if(!user_name)
+      if(!user_email)
         {
           await retrieveUser();
           if (currentMessage !== "") {
             const messageData = {
-              room: "testing",
-              author: user_name,
+              room: cardId,
+              author: user_email,
               message: currentMessage,
               time: 
                 new Date(Date.now()).getHours() +
@@ -85,7 +90,7 @@ const Chatmodal = ({ isOpen, socket, username, room }) => {
     
             const json = await response.json();
             if(json.success){
-              console.log(json.message)
+              console.log("reposnse form retrieving chats" ,json.message)
               setMessageList((list) => [...list, messageData]);
               await socket.emit("send_message", messageData);
               setCurrentMessage("");

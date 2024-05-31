@@ -265,7 +265,7 @@ function CardInfo(props) {
           />
           <button onClick={() => {setIsChatModalOpen(true); 
                     }} className="chat-button">chat</button>
-          <Chatmodal
+          <Chatmodal values = {values}
           socket={socket} username={username} room={room} isOpen={isChatModalOpen} onClose={toggleOverlay}>
                      <div className="chat-box">
                       <input

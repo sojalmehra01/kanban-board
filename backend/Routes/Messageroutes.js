@@ -55,11 +55,12 @@ router.post("/createMessage",
 router.post("/getMessages", 
     async(req,res)=>{
         try{
-            const user_name = req.body.author; 
-            console.log("retrieving messages of ", user_name);
+            const user_email = req.body.author; 
+            console.log("retrieving messages of ", user_email);
 
             const allMessages = await Message.find({
-                author: user_name,
+                room: req.body.room,
+                author: user_email,
             })
             res.json({success: true, message: "messages successfully fetched", messages: allMessages})
         }
