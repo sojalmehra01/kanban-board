@@ -7,6 +7,10 @@ const SubtaskSchema = new mongoose.Schema({
       type: Number,
       required: true,
     },
+    card_title : {
+      type: String, 
+      required: true,
+    },
     subtask_title : {
       type: String,
       required: true,
@@ -14,6 +18,10 @@ const SubtaskSchema = new mongoose.Schema({
     subtaskId: {
       type: Number,
       required:true,
+    },
+    isCompleted: {
+      type: Boolean,
+      required: true
     }
   })
   

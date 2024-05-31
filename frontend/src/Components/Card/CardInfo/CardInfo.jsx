@@ -82,6 +82,7 @@ function CardInfo(props) {
   const [values, setValues] = useState({
     ...props.card,
   });
+  console.log(values);
 
   const updateTitle = (value) => {
     setValues({ ...values, title: value });
@@ -116,25 +117,18 @@ function CardInfo(props) {
         const tempBoards = [...boards];
         const boardIndex = tempBoards.findIndex(board => board.boardId === props.card.board_id);
         const cardIndex = tempBoards[boardIndex].cards.findIndex(card => card.cardId === props.card.cardId);
-        console.log(boardIndex, cardIndex, " both indexes hehe")
-        const { data: { user } } = await supabase.auth.getUser();
-        const userDetails = user;
-        // console.log(userDetails);
-
-        const cards = tempBoards[boardIndex].cards;
-        console.log(values);
 
         let subtaskId = Date.now() + Math.random() * 2;
         subtaskId = subtaskId.toFixed(1);
         subtaskId = subtaskId * 10;
-        console.log(subtaskId);
+        // console.log(subtaskId);
 
         const newSubtask = {
-            // board_title: tempBoards[index].title,
             cardId: values.cardId,
             card_title: values.title, 
             subtaskId: subtaskId,
             subtask_title: title,
+            isCompleted: false,
         };
         
 
@@ -201,10 +195,10 @@ function CardInfo(props) {
   const updateTask = (id, value) => {
     const tasks = [...values.tasks];
 
-    const index = tasks.findIndex((item) => item.id === id);
+    const index = tasks.findIndex((item) => item.subtaskId === id);
     if (index < 0) return;
 
-    tasks[index].completed = value;
+    tasks[index].isCompleted = value;
 
     setValues({
       ...values,
@@ -214,7 +208,7 @@ function CardInfo(props) {
 
   const calculatePercent = () => {
     if (!values.tasks?.length) return 0;
-    const completed = values.tasks?.filter((item) => item.completed)?.length;
+    const completed = values.tasks?.filter((item) => item.isCompleted)?.length;
     return (completed / values.tasks?.length) * 100;
   };
 
@@ -228,7 +222,8 @@ function CardInfo(props) {
   };
 
   useEffect(() => {
-    if (props.updateCard) props.updateCard(props.boardId, values.id, values);
+    if (props.updateCard) props.updateCard(props.boardId, values.cardId, values);
+    // calculatePercent();
   }, [values]);
 
   //----------------------------------------------------------------------------
@@ -377,12 +372,12 @@ function CardInfo(props) {
               <div key={item.subtaskId} className="cardinfo_box_task_checkbox">
                 <input
                   type="checkbox"
-                  defaultChecked={item.completed}
+                  defaultChecked={item.isCompleted}
                   onChange={(event) =>
                     updateTask(item.subtaskId, event.target.checked)
                   }
                 />
-                <p className={item.completed ? "completed" : ""}>{item.subtask_title}</p>
+                <p className={item.isCompleted ? "completed" : ""}>{item.subtask_title}</p>
 
                 <div className="subtask-actions">
                   

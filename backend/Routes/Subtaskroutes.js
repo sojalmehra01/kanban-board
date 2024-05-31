@@ -18,8 +18,10 @@ router.post("/createSubtask", async (req, res) => {
         
         await Subtask.create({
             cardId: req.body.cardId,
+            card_title: req.body.card_title,
             subtask_title: req.body.subtask_title, 
             subtaskId: req.body.subtaskId, 
+            isCompleted: req.body.isCompleted,
         });
 
         res.json({ success: true, message: "Subtask created" });
