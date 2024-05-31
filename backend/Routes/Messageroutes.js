@@ -41,6 +41,7 @@ router.post("/createMessage",
             await Message.create({
                 room: req.body.room, 
                 author: req.body.author, 
+                author_name: req.body.author_name,
                 message: req.body.message, 
                 time: req.body.time,
             })
@@ -60,7 +61,6 @@ router.post("/getMessages",
 
             const allMessages = await Message.find({
                 room: req.body.room,
-                author: user_email,
             })
             res.json({success: true, message: "messages successfully fetched", messages: allMessages})
         }

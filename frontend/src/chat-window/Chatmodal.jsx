@@ -3,29 +3,38 @@ import { supabase } from "../Supabaseclient";
 // import ScrollToBottom from "react-scroll-to-bottom";
 import "./chat-modal.css"
 
-const Chatmodal = ({ values, isOpen, socket, username, room }) => {
+const Chatmodal = ({ values, isOpen, socket}) => {
+  // console.log(email, name);
 
   const message_ref = useRef(null);
 
   const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
 
-  const cardDetails = values;
   const cardId = values.cardId;
   console.log("i'm card id ", cardId)
 
-  let userDetails = {};
-  let user_email = '';
+  // const [userDetails, setUserDetails] = useState({});
+  
+  const [userEmail, setUserEmail] = useState("");
+  const [userName, setUserName] = useState("");
 
-  const retrieveUser = async() =>{
-    const { data: { user } } = await supabase.auth.getUser()
-      userDetails = user;
-      user_email = user.user_metadata.email;
-      retrieveChats();
-    }
+    
 
-    const retrieveChats = async()=>{
+  const retrieveUser = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    setUserName(user.user_metadata.full_name);
+    setUserEmail(user.user_metadata.email);
+    retrieveChats();
+  };
+  
+  
+  const retrieveChats = async()=>{
       try{
+
+      
+
+
         const response = await fetch("http://localhost:5000/api/getMessages", 
           {
             method: "POST", 
@@ -34,7 +43,7 @@ const Chatmodal = ({ values, isOpen, socket, username, room }) => {
             }, 
             body: JSON.stringify({
               room: cardId, 
-              author: user_email,
+              author: userEmail,
             })
           }
         )
@@ -58,34 +67,34 @@ const Chatmodal = ({ values, isOpen, socket, username, room }) => {
     },[])
 
   const sendMessage = async () => {
-
     try{
-      if(!user_email)
+      if(userEmail)
         {
-          await retrieveUser();
           if (currentMessage !== "") {
             const messageData = {
               room: cardId,
-              author: user_email,
+              author: userEmail,
+              author_name: userName,
               message: currentMessage,
               time: 
                 new Date(Date.now()).getHours() +
                 ":" +
                 new Date(Date.now()).getMinutes(),
             };
-            console.log(typeof(messageData.author))
             console.log(messageData)
             const response = await fetch("http://localhost:5000/api/createMessage", {
               method: "POST", 
               headers:{
                 "Content-Type":"application/json"
               }, 
-              body: JSON.stringify({
-                room: messageData.room, 
-                author: messageData.author, 
-                message: messageData.message,
-                time: messageData.time
-              })
+              // body: JSON.stringify({
+              //   room: messageData.room, 
+              //   author: messageData.author, 
+              //   author_name: messageData.author_name,
+              //   message: messageData.message,
+              //   time: messageData.time
+              // })
+              body: JSON.stringify(messageData)
             })
     
             const json = await response.json();
@@ -129,12 +138,11 @@ const Chatmodal = ({ values, isOpen, socket, username, room }) => {
            <p>Live Chat</p>
          </div>
          <div className="chat-body">
-           {/* <ScrollToBottom className="message-container"> */}
              {messageList.map((messageContent) => {
                return (
                  <div
                  className="message"
-                 id={username === messageContent.author ? "you" : "other"}
+                 id={userEmail === messageContent.author ? "you" : "other"}
                  >
                    <div>
                      <div className="message-content">
@@ -142,14 +150,13 @@ const Chatmodal = ({ values, isOpen, socket, username, room }) => {
                      </div>
                      <div className="message-meta">
                        <p id="time">{messageContent.time}</p>
-                       <p id="author">{messageContent.author}</p>
+                       <p id="author">{messageContent.author_name}</p>
                      </div>
                    </div>
                  </div>
                );
              })}
-           {/* </ScrollToBottom> */}
-                 <div ref={message_ref}/>
+            <div ref={message_ref}/>
          </div>
          <div className="chat-footer">
            <input

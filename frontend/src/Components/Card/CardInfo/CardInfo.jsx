@@ -22,22 +22,37 @@ import "./CardInfo.css";
 
 function CardInfo(props) {
 
-  const [username, setUsername] = useState("");
+  let userDetails = {};
+  let userEmail = "";
+  let userName = "";
+  const retrieveUser = async() =>{
+    const { data: { user } } = await supabase.auth.getUser()
+      userDetails = user;
+      userName = user.user_metadata.full_name;
+      userEmail = user.user_metadata.email;
+  }
+
+  useEffect(()=>{
+    retrieveUser();
+  },[])
+
+  // const [username, setUsername] = useState("");
+  // const [userDetails, setUserDetails] = useState("");
   const [room, setRoom] = useState("");
   const [showChat, setShowChat] = useState(false);
 
-  const joinRoom = async() => {
+  // const joinRoom = async() => {
 
-    const { data: { user } } = await supabase.auth.getUser()
+  //   const { data: { user } } = await supabase.auth.getUser()
 
-    setUsername(user.user_metadata.full_name)
-    values && setRoom(values.cardId);
+  //   setUsername(user.user_metadata.full_name)
+  //   values && setRoom(values.cardId);
 
-    if (username !== "" && room !== "") {
-      socket.emit("join_room", room);
-      setShowChat(true);
-    }
-  };
+  //   if (username !== "" && room !== "") {
+  //     socket.emit("join_room", room);
+  //     setShowChat(true);
+  //   }
+  // };
 
   const [isChatModalOpen, setIsChatModalOpen] = useState(false);
   const messageInputRef = useRef(null);
@@ -265,8 +280,8 @@ function CardInfo(props) {
           />
           <button onClick={() => {setIsChatModalOpen(true); 
                     }} className="chat-button">chat</button>
-          <Chatmodal values = {values}
-          socket={socket} username={username} room={room} isOpen={isChatModalOpen} onClose={toggleOverlay}>
+          <Chatmodal email = {userEmail} name = {userName} values = {values}
+          socket={socket} room={room} isOpen={isChatModalOpen} onClose={toggleOverlay}>
                      <div className="chat-box">
                       <input
                         ref={messageInputRef}

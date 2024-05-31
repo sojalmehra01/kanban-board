@@ -15,7 +15,6 @@ router.post("/getBoards", async (req, res) => {
          res.json({success:true, message: "board successfully fetched", boards : allBoards})
       } catch (error) {
            res.status(400).json({ message : error,error: 'An error occurred' });
-         
       }
 })
 
