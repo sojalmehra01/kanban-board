@@ -26,7 +26,6 @@ const Home = () => {
   const { data: { user } } = await supabase.auth.getUser()
     userDetails = user;
     user_name = user.user_metadata.full_name;
-    // console.log(user_name);
     retrieveBoards();
   }
   
@@ -210,7 +209,7 @@ const Home = () => {
           title: title,
           board_title: tempBoards[index].title,
           card_user: user_name,
-          tasks: [{}]
+          tasks: []
         }
 
         console.log(newCard);

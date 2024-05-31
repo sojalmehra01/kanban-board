@@ -18,10 +18,15 @@ import Modal from "../../Modal/Modal";
 import Editable from "../../Editabled/Editable";
 
 import "./CardInfo.css";
+import Collaborate from "../../collaborate/Collaborate";
 
 
 function CardInfo(props) {
 
+  const [boards, setBoards] = useState(
+    JSON.parse(localStorage.getItem("prac-kanban")) || []
+      );
+      console.log(boards)
   let userDetails = {};
   let userEmail = "";
   let userName = "";
@@ -108,16 +113,15 @@ function CardInfo(props) {
 //-------------------------------------------------------
   const addsubtaskhandler = async(title) => {
     try {
-        // const index = boards.findIndex((item) => item.boardId === bid);
-        // if (index < 0) return;
-        console.log(title);
-
-        // const tempBoards = [...boards];
+        const tempBoards = [...boards];
+        const boardIndex = tempBoards.findIndex(board => board.boardId === props.card.board_id);
+        const cardIndex = tempBoards[boardIndex].cards.findIndex(card => card.cardId === props.card.cardId);
+        console.log(boardIndex, cardIndex, " both indexes hehe")
         const { data: { user } } = await supabase.auth.getUser();
         const userDetails = user;
-        console.log(userDetails);
+        // console.log(userDetails);
 
-        // const cards = tempBoards[index].cards;
+        const cards = tempBoards[boardIndex].cards;
         console.log(values);
 
         let subtaskId = Date.now() + Math.random() * 2;
@@ -125,13 +129,14 @@ function CardInfo(props) {
         subtaskId = subtaskId * 10;
         console.log(subtaskId);
 
-        let newSubtask = {
+        const newSubtask = {
             // board_title: tempBoards[index].title,
             cardId: values.cardId,
             card_title: values.title, 
             subtaskId: subtaskId,
             subtask_title: title,
         };
+        
 
         console.log('subtask => ', newSubtask);
 
@@ -140,26 +145,19 @@ function CardInfo(props) {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({
-                // board_title: newSubtask.board_title,
-                // cardId: newSubtask.cardId,
-              // card_title: newSubtask.card_title,
-                // board_title: tempBoards[index].title,
-                cardId: newSubtask.cardId,
-                card_title: newSubtask.card_title,
-                subtaskId:subtaskId,
-                subtask_title: newSubtask.subtask_title,
-            })
+            body: JSON.stringify(newSubtask)
         });
 
         const json = await response.json();
         if (json.success) {
-          // setValues({
-            //   ...values,
-            //   tasks: [...values.tasks, newSubtask],
-            // });
-            addTask(newSubtask);
-            console.log(values.tasks);
+          const updatedTasks = [...values.tasks, newSubtask];
+          setValues({
+            ...values,
+            tasks: updatedTasks,
+          });
+          tempBoards[boardIndex].cards[cardIndex].tasks = updatedTasks;
+          setBoards(tempBoards);
+          localStorage.setItem("prac-kanban", JSON.stringify(tempBoards));
             alert('Subtask added');
         } else {
             console.log(json.error);
@@ -275,9 +273,12 @@ function CardInfo(props) {
           <Editable
             defaultValue={values.title}
             text={values.title}
-            placeholder="Enter Title"
+            placeholder="Enter Title"s
             onSubmit={updateTitle}
           />
+
+          {/* <Collaborate/> */}
+
           <button onClick={() => {setIsChatModalOpen(true); 
                     }} className="chat-button">chat</button>
           <Chatmodal email = {userEmail} name = {userName} values = {values}

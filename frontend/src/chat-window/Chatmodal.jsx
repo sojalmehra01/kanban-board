@@ -12,7 +12,6 @@ const Chatmodal = ({ values, isOpen, socket}) => {
   const [messageList, setMessageList] = useState([]);
 
   const cardId = values.cardId;
-  console.log("i'm card id ", cardId)
 
   // const [userDetails, setUserDetails] = useState({});
   
@@ -31,10 +30,6 @@ const Chatmodal = ({ values, isOpen, socket}) => {
   
   const retrieveChats = async()=>{
       try{
-
-      
-
-
         const response = await fetch("http://localhost:5000/api/getMessages", 
           {
             method: "POST", 
@@ -51,7 +46,7 @@ const Chatmodal = ({ values, isOpen, socket}) => {
         const json = await response.json();
         if(json.success)
           {
-            console.log(json.messages);
+            // console.log(json.messages);
             setMessageList(json.messages);
           }
       }
@@ -99,7 +94,7 @@ const Chatmodal = ({ values, isOpen, socket}) => {
     
             const json = await response.json();
             if(json.success){
-              console.log("reposnse form retrieving chats" ,json.message)
+              console.log("reposnse form creating chats" ,json.message)
               setMessageList((list) => [...list, messageData]);
               await socket.emit("send_message", messageData);
               setCurrentMessage("");
