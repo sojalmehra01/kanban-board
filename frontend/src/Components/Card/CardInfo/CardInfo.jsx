@@ -385,8 +385,25 @@ function CardInfo(props) {
 
                 <div className="subtask-actions">
                   
+                  {/* <button className={`raise-query ${isClicked ? 'clicked' : ''}`}
+                    onClick={handleClick}>Raise-query</button> */}
                   <button className={`raise-query ${isClicked ? 'clicked' : ''}`}
-                  onClick={handleClick}>Raise-query</button>
+                    onClick={handleClick}> Raise-query
+                    <svg>
+                      <defs>
+                        <filter id="glow">
+                          <fegaussianblur result="coloredBlur" stddeviation="5"></fegaussianblur>
+                          <femerge>
+                            <femergenode in="coloredBlur"></femergenode>
+                            <femergenode in="coloredBlur"></femergenode>
+                            <femergenode in="coloredBlur"></femergenode>
+                            <femergenode in="SourceGraphic"></femergenode>
+                          </femerge>
+                        </filter>
+                      </defs>
+                      <rect />
+                    </svg>
+                  </button>
                 </div>
                 <Trash onClick={() => removesubtask(item.subtaskId)} />
                 
@@ -394,8 +411,8 @@ function CardInfo(props) {
             ))}
           </div>
           <Editable
-            text={"Add a Task"}
-            placeholder="Enter task"
+            text={"Add a SubTask"}
+            placeholder="Enter Subtask"
             onSubmit={(value) =>{addsubtaskhandler(value)}}
           />
         </div>

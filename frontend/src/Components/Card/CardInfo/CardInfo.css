@@ -152,7 +152,7 @@
     background-color: #cecdcd;
 }
 
-.raise-query {
+/* .raise-query {
     background-color: rgb(174, 0, 255);
     color: white;
     padding: 4px 4px;
@@ -177,4 +177,133 @@
 .raise-query:active {
     background-color: rgb(154, 61, 191);
     box-shadow: 0 0 5px rgba(209, 109, 255, 0.75);
+} */
+
+.raise-query,
+.raise-query *,
+.raise-query :after,
+.raise-query :before,
+.raise-query:after,
+.raise-query:before {
+    border: 0 solid;
+    box-sizing: border-box;
+}
+.raise-query.clicked {
+    background-color: red;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+}
+.raise-query.clicked :hover {
+    background-color: rgb(243, 63, 63);
+    box-shadow: 0 0 10px rgba(255, 33, 33, 0.833);
+}
+.raise-query {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-appearance: button;
+    background-color: #000;
+    background-image: none;
+    color: #f9f8f8;
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+        Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif,
+        Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+    font-size: 100%;
+    font-weight: 900;
+    line-height: 1.5;
+    margin: 0;
+    -webkit-mask-image: -webkit-radial-gradient(#000, #fff);
+    padding: 0;
+    text-transform: uppercase;
+}
+
+.raise-query:disabled {
+    cursor: default;
+}
+
+.raise-query:-moz-focusring {
+    outline: auto;
+}
+
+.raise-query svg {
+    vertical-align: middle;
+}
+
+.raise-query [hidden] {
+    display: none;
+}
+
+.raise-query {
+    --thickness: 0.3rem;
+    --roundness: 1.2rem;
+    --color: #000000;
+    --opacity: 0.6;
+    -webkit-backdrop-filter: blur(100px);
+    backdrop-filter: blur(100px);
+    background: none;
+    background: hsla(269, 100%, 51%, 0.434);
+    border: none;
+    border-radius: var(--roundness);
+    color: var(--color);
+    cursor: pointer;
+    display: block;
+    font-family: Poppins, "sans-serif";
+    font-size: 0.7rem;
+    font-weight: 500;
+    padding: 0.6rem 1rem;
+    position: relative;
+}
+
+.raise-query:hover {
+    background: hsl(264, 100%, 67%);
+    filter: brightness(1.2);
+}
+
+.raise-query:active {
+    --opacity: 0;
+    background: hsla(0, 0%, 100%, 0.1);
+}
+
+.raise-query svg {
+    border-radius: var(--roundness);
+    display: block;
+    filter: url(#glow);
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+.raise-query rect {
+    fill: none;
+    stroke: var(--color);
+    stroke-width: var(--thickness);
+    rx: var(--roundness);
+    stroke-linejoin: round;
+    stroke-dasharray: 185%;
+    stroke-dashoffset: 80;
+    -webkit-animation: snake 2s linear infinite;
+    animation: snake 2s linear infinite;
+    -webkit-animation-play-state: paused;
+    animation-play-state: paused;
+    height: 99%;
+    opacity: 0;
+    transition: opacity 0.2s;
+    width: 99%;
+}
+
+.raise-query:hover rect {
+    -webkit-animation-play-state: running;
+    animation-play-state: running;
+    opacity: var(--opacity);
+}
+
+@-webkit-keyframes snake {
+    to {
+        stroke-dashoffset: 370%;
+    }
+}
+
+@keyframes snake {
+    to {
+        stroke-dashoffset: 370%;
+    }
 }
