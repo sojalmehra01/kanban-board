@@ -257,6 +257,10 @@ function CardInfo(props) {
     }
   };
   
+  const [isClicked, setIsClicked] = useState(false);
+  const handleClick = () => {
+    setIsClicked(!isClicked);
+  }
   return (
     <Modal onClose={props.onClose}>
       <div className="cardinfo">
@@ -381,7 +385,8 @@ function CardInfo(props) {
 
                 <div className="subtask-actions">
                   
-                  <button className="raise-query">Raise a query</button>
+                  <button className={`raise-query ${isClicked ? 'clicked' : ''}`}
+                  onClick={handleClick}>Raise-query</button>
                 </div>
                 <Trash onClick={() => removesubtask(item.subtaskId)} />
                 

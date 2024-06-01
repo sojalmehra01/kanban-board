@@ -151,3 +151,30 @@
     cursor: pointer;
     background-color: #cecdcd;
 }
+
+.raise-query {
+    background-color: rgb(174, 0, 255);
+    color: white;
+    padding: 4px 4px;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    border-radius: 25px;
+    transition: box-shadow 0.3s ease, background-color 0.3s ease;
+    box-shadow: 0 0 10px rgba(204, 0, 255, 0.5);
+    outline: none;
+}
+
+.raise-query.clicked {
+    background-color: red;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+}
+
+.raise-query:hover {
+    box-shadow: 0 0 15px rgba(183, 0, 255, 0.75);
+}
+
+.raise-query:active {
+    background-color: rgb(154, 61, 191);
+    box-shadow: 0 0 5px rgba(209, 109, 255, 0.75);
+}
