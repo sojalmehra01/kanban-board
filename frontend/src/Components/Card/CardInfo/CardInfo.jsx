@@ -181,7 +181,7 @@ function CardInfo(props) {
   const removesubtask = (id) => {
     const tasks = [...values.tasks];
     const updatedTasks = tasks.map(task => {
-        const updatedSubtasks = task.subtasks.filter(subtask => subtask.id !== id);
+        const updatedSubtasks = task.subtasks.filter(subtask => subtask.subtaskId !== id);
         return { ...task, subtasks: updatedSubtasks };
     });
 

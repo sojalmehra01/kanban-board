@@ -9,6 +9,9 @@ import CardInfo from "./CardInfo/CardInfo";
 function Card(props) {
   const [showDropdown, setShowDropdown] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [boards, setBoards] = useState({
+    ...props.boards
+  })
 
   const {boardId, cardId, title,board_title, card_user, date, tasks, labels } = props.card;
 
