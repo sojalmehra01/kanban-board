@@ -129,8 +129,10 @@ function CardInfo(props) {
             subtaskId: subtaskId,
             subtask_title: title,
             isCompleted: false,
+            isDeleted: false,
         };
         
+      
 
         console.log('subtask => ', newSubtask);
 
@@ -161,24 +163,10 @@ function CardInfo(props) {
     }
 };
 //-----------------------------------------------------
-  const addTask = (value) => {
-    setValues({
-      ...values,
-      tasks: [...values.tasks, value],
-    });
-  };
 
-  // const removeTask = (id) => {
-  //   const tasks = [...values.tasks];
 
-  //   const tempTasks = tasks.filter((item) => item.id !== id);
-  //   setValues({
-  //     ...values,
-  //     tasks: tempTasks,
-  //   });
-  // };
-
-   const removesubtask = async (id) => {
+const removesubtask = async (id) => {
+     console.log("subtaskID = ", id)
     try {
       const response = await fetch('http://localhost:5000/api/deleteSubtask', {
         method: 'DELETE',
@@ -186,6 +174,7 @@ function CardInfo(props) {
         body: JSON.stringify({ subtaskId: id })
       });
       const json = await response.json();
+
       if (json.success) {
         const tasks = [...values.tasks];
         const updatedTasks = tasks.filter(task => task.subtaskId !== id);

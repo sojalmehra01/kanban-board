@@ -22,6 +22,10 @@ const SubtaskSchema = new mongoose.Schema({
     isCompleted: {
       type: Boolean,
       required: true
+  },
+  isDeleted: {
+    type: Boolean,
+    required: true
     }
   })
   

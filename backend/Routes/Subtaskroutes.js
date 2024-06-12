@@ -22,6 +22,7 @@ router.post("/createSubtask", async (req, res) => {
             subtask_title: req.body.subtask_title, 
             subtaskId: req.body.subtaskId, 
             isCompleted: req.body.isCompleted,
+            isDeleted: req.body.isDeleted,
         });
 
         res.json({ success: true, message: "Subtask created" });
@@ -32,10 +33,18 @@ router.post("/createSubtask", async (req, res) => {
 });
 
 router.post("/deleteSubtask", async (req, res) => {
-    const { subtaskId } = req.body;
+    const { subtaskId } = req.body.subtaskId;
     try {
-        const result = await db.deleteSubtask(subtaskId);
-        
+        const result = await Subtask.updateOne(
+            {
+                subtaskId: subtaskId
+            },
+            {
+                $set: {
+                    isDeleted: true
+                }
+            }
+        )
         if (result) {
             res.status(200).json({ success: true, message: "Subtask deleted successfully" });
         } else {
