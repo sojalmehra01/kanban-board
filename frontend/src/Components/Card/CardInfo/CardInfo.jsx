@@ -178,18 +178,31 @@ function CardInfo(props) {
   //   });
   // };
 
-  const removesubtask = (id) => {
-    const tasks = [...values.tasks];
-    const updatedTasks = tasks.map(task => {
-        const updatedSubtasks = task.subtasks.filter(subtask => subtask.subtaskId !== id);
-        return { ...task, subtasks: updatedSubtasks };
-    });
-
-    setValues({
-        ...values,
-        tasks: updatedTasks,
-    });
-};
+   const removesubtask = async (id) => {
+    try {
+      const response = await fetch('http://localhost:5000/api/deleteSubtask', {
+        method: 'DELETE',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ subtaskId: id })
+      });
+      const json = await response.json();
+      if (json.success) {
+        const tasks = [...values.tasks];
+        const updatedTasks = tasks.filter(task => task.subtaskId !== id);
+        setValues({ ...values, tasks: updatedTasks });
+        const tempBoards = [...boards];
+        const boardIndex = tempBoards.findIndex(board => board.boardId === props.card.board_id);
+        const cardIndex = tempBoards[boardIndex].cards.findIndex(card => card.cardId === props.card.cardId);
+        tempBoards[boardIndex].cards[cardIndex].tasks = updatedTasks;
+        setBoards(tempBoards);
+        localStorage.setItem("prac-kanban", JSON.stringify(tempBoards));
+      } else {
+        console.log(json.error);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
 
   const updateTask = (id, value) => {

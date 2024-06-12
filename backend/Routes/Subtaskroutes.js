@@ -31,8 +31,21 @@ router.post("/createSubtask", async (req, res) => {
     }
 });
 
-
-
+router.post("/deleteSubtask", async (req, res) => {
+    const { subtaskId } = req.body;
+    try {
+        const result = await db.deleteSubtask(subtaskId);
+        
+        if (result) {
+            res.status(200).json({ success: true, message: "Subtask deleted successfully" });
+        } else {
+            res.status(400).json({ success: false, message: "Subtask deletion failed" });
+        }
+    } catch (error) {
+        console.error("Error deleting subtask:", error);
+        res.status(500).json({ success: false, message: "Internal server error" });
+    }
+});
 
 
 
