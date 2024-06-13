@@ -325,8 +325,9 @@ const Home = () => {
       <div className="container">
         <div className="app_boards_container">
         <div className="app_boards">
-          {boards.map((item) => (
+          {boards.map((item, index) => (
             <Board
+              index = {index}
               key={item.boardId}
               board={item}
               addCard={addCardHandler}

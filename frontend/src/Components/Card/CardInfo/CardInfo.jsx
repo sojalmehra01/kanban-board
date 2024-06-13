@@ -22,33 +22,40 @@ import Collaborate from "../../collaborate/Collaborate";
 
 
 function CardInfo(props) {
-
-  const [boards, setBoards] = useState(
-    JSON.parse(localStorage.getItem("prac-kanban")) || []
-      );
-      console.log(boards)
-  let userDetails = {};
-  let userEmail = "";
-  let userName = "";
-  const retrieveUser = async() =>{
-    const { data: { user } } = await supabase.auth.getUser()
+  
+  // const [boards, setBoards] = useState(
+    //   JSON.parse(localStorage.getItem("prac-kanban")) || []
+    //     );
+    const [boards, setBoards] = useState();
+    // console.log(boards)
+    let userDetails = {};
+    let userEmail = "";
+    let userName = "";
+    const retrieveUser = async() =>{
+      const { data: { user } } = await supabase.auth.getUser()
       userDetails = user;
       userName = user.user_metadata.full_name;
       userEmail = user.user_metadata.email;
-  }
+      }
+      
+      useEffect(()=>{
+          retrieveUser();
+          const tempBoards =  JSON.parse(localStorage.getItem("prac-kanban"));
+          setBoards(tempBoards);
+        },[])
+      // console.log(boards)
 
-  useEffect(()=>{
-    retrieveUser();
-  },[])
+      // console.log((typeof boards === undefined)+ "     " +boards)
 
-  const retreiveBoards = async() =>{
-    const tempBoards =  JSON.parse(localStorage.getItem("prac-kanban"));
-    setBoards(tempBoards);
-  }
 
-  useEffect(()=>{
-    retreiveBoards();
-  },[])
+      if(!(typeof (boards )=== "undefined"))
+        {
+          console.log(boards);
+      console.log(boards[0].cards[0].tasks)
+        }
+   
+
+
   // const [username, setUsername] = useState("");
   // const [userDetails, setUserDetails] = useState("");
   const [room, setRoom] = useState("");
@@ -86,11 +93,14 @@ function CardInfo(props) {
     "#240959",
   ];
 
+console.log(props.cardIndex);
+
   const [selectedColor, setSelectedColor] = useState();
   const [values, setValues] = useState({
     ...props.card,
   });
-  console.log(values);
+  // console.log(values);
+// const [index, setIndex]=useState(props.cardIndex || -1)
 
   const updateTitle = (value) => {
     setValues({ ...values, title: value });
@@ -155,8 +165,8 @@ function CardInfo(props) {
         if (json.success) {
           const updatedTasks = [...values.tasks, newSubtask];
           tempBoards[boardIndex].cards[cardIndex].tasks = updatedTasks;
-          setBoards(tempBoards);
           localStorage.setItem("prac-kanban", JSON.stringify(tempBoards));
+          setBoards(tempBoards);
             setValues({
               ...values,
               tasks: updatedTasks,
@@ -298,6 +308,7 @@ function CardInfo(props) {
   }
   return (
     <Modal onClose={props.onClose}>
+    <button onClick={()=>{console.log(values)}}>Get boards</button>
       <div className="cardinfo">
         <div className="cardinfo_box">
           <div className="cardinfo_box_title">
@@ -407,7 +418,7 @@ function CardInfo(props) {
             />
           </div>
           <div className="cardinfo_box_task_list">
-            {values.tasks?.map((item) => (
+            {!(typeof (boards)=== "undefined") ? boards[props.boardIndex].cards[props.cardIndex].tasks.map((item) => (
               <div key={item.subtaskId} className="cardinfo_box_task_checkbox">
                 <input
                   type="checkbox"
@@ -443,7 +454,7 @@ function CardInfo(props) {
                 <Trash onClick={() => removeTask(item.subtaskId)} />
                 
               </div>
-            ))}
+            )):""}
           </div>
           <Editable
             text={"Add a SubTask"}

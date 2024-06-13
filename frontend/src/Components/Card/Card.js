@@ -44,6 +44,8 @@ function Card(props) {
     <>
       {showModal && (
         <CardInfo
+        boardIndex={props.boardIndex}
+        cardIndex={props.index}
           onClose={() => setShowModal(false)}
           card={props.card}
           boardId={props.boardId}

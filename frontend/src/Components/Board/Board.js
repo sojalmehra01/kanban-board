@@ -33,8 +33,10 @@ function Board(props) {
         </div>
       </div>
       <div className="board_cards custom-scroll">
-        {props.board?.cards?.map((item) => (
+        {props.board?.cards?.map((item, index) => (
           <Card
+          boardIndex = {props.index}
+            index={index}
             key={item.boardId}
             card={item}
             boardId={props.board.boardId}
