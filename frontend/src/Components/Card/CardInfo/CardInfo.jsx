@@ -41,6 +41,14 @@ function CardInfo(props) {
     retrieveUser();
   },[])
 
+  const retreiveBoards = async() =>{
+    const tempBoards =  JSON.parse(localStorage.getItem("prac-kanban"));
+    setBoards(tempBoards);
+  }
+
+  useEffect(()=>{
+    retreiveBoards();
+  },[])
   // const [username, setUsername] = useState("");
   // const [userDetails, setUserDetails] = useState("");
   const [room, setRoom] = useState("");
@@ -129,10 +137,9 @@ function CardInfo(props) {
             subtaskId: subtaskId,
             subtask_title: title,
             isCompleted: false,
-            isDeleted: false,
+            isDeleted:false,
         };
         
-      
 
         console.log('subtask => ', newSubtask);
 
@@ -147,13 +154,13 @@ function CardInfo(props) {
         const json = await response.json();
         if (json.success) {
           const updatedTasks = [...values.tasks, newSubtask];
-          setValues({
-            ...values,
-            tasks: updatedTasks,
-          });
           tempBoards[boardIndex].cards[cardIndex].tasks = updatedTasks;
           setBoards(tempBoards);
           localStorage.setItem("prac-kanban", JSON.stringify(tempBoards));
+            setValues({
+              ...values,
+              tasks: updatedTasks,
+            });
             alert('Subtask added');
         } else {
             console.log(json.error);
@@ -163,35 +170,59 @@ function CardInfo(props) {
     }
 };
 //-----------------------------------------------------
-
-
-const removesubtask = async (id) => {
-     console.log("subtaskID = ", id)
-    try {
-      const response = await fetch('http://localhost:5000/api/deleteSubtask', {
-        method: 'DELETE',
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ subtaskId: id })
-      });
-      const json = await response.json();
-
-      if (json.success) {
-        const tasks = [...values.tasks];
-        const updatedTasks = tasks.filter(task => task.subtaskId !== id);
-        setValues({ ...values, tasks: updatedTasks });
-        const tempBoards = [...boards];
-        const boardIndex = tempBoards.findIndex(board => board.boardId === props.card.board_id);
-        const cardIndex = tempBoards[boardIndex].cards.findIndex(card => card.cardId === props.card.cardId);
-        tempBoards[boardIndex].cards[cardIndex].tasks = updatedTasks;
-        setBoards(tempBoards);
-        localStorage.setItem("prac-kanban", JSON.stringify(tempBoards));
-      } else {
-        console.log(json.error);
-      }
-    } catch (error) {
-      console.log(error);
-    }
+  const addTask = (value) => {
+    setValues({
+      ...values,
+      tasks: [...values.tasks, value],
+    });
   };
+
+  const removeTask = (id) => {
+
+    const tempBoards = [...boards];
+    const boardIndex = tempBoards.findIndex(board => board.boardId === props.card.board_id);
+    const cardIndex = tempBoards[boardIndex].cards.findIndex(card => card.cardId === props.card.cardId);
+    const tasks = [...values.tasks];
+    
+    const tempTasks = tasks.filter((item) => item.subtaskId !== id);
+    console.log(tempTasks);
+    setValues({
+      ...values,
+      tasks: tempTasks,
+      });
+      tempBoards[boardIndex].cards[cardIndex].tasks = tempTasks;
+      localStorage.setItem("prac-kanban", JSON.stringify(tempBoards));
+      setBoards(tempBoards);
+  };
+
+  //=============================================YE TUJHE KARNA HAI SOJAL=============
+  const removesubtask = (id) => {
+    const tasks = [...values.tasks];
+    console.log(tasks);
+    console.log(id);
+
+    const subtaskIndex = tasks.findIndex(subtask => subtask.subtaskId === id)
+    tasks.splice(subtaskIndex,1);
+
+    console.log(subtaskIndex);
+
+    // tasks[subtaskIndex].isCompleted = true;
+    
+    setValues({
+      ...values, 
+      tasks:tasks
+    })
+    
+    // const updatedTasks = tasks.map(task => {
+    //     const updatedSubtasks = task.filter(subtask => subtask.subtaskId !== id);
+    //     return { ...task, subtasks: updatedSubtasks };
+    // });
+
+    // setValues({
+    //     ...values,
+    //     tasks: updatedTasks,
+    // });
+};
 
 
   const updateTask = (id, value) => {
@@ -207,6 +238,8 @@ const removesubtask = async (id) => {
       tasks,
     });
   };
+
+  //===========================================YAHA TAK ==================================
 
   const calculatePercent = () => {
     if (!values.tasks?.length) return 0;
@@ -407,7 +440,7 @@ const removesubtask = async (id) => {
                     </svg>
                   </button>
                 </div>
-                <Trash onClick={() => removesubtask(item.subtaskId)} />
+                <Trash onClick={() => removeTask(item.subtaskId)} />
                 
               </div>
             ))}

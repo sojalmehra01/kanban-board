@@ -23,9 +23,9 @@ const SubtaskSchema = new mongoose.Schema({
       type: Boolean,
       required: true
   },
-  isDeleted: {
-    type: Boolean,
-    required: true
+    isDeleted: {
+      type: Boolean,
+      required: true
     }
   })
   
