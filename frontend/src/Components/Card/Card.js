@@ -12,6 +12,10 @@ function Card(props) {
   const [boards, setBoards] = useState({
     ...props.boards
   })
+  const updateBoards = (newBoards) => {
+    setBoards(newBoards);
+
+  }
 
   const {boardId, cardId, title,board_title, card_user, date, tasks, labels } = props.card;
 
@@ -44,8 +48,8 @@ function Card(props) {
     <>
       {showModal && (
         <CardInfo
-        boardIndex={props.boardIndex}
-        cardIndex={props.index}
+          boardIndex={props.boardIndex}
+          cardIndex={props.index}
           onClose={() => setShowModal(false)}
           card={props.card}
           boardId={props.boardId}

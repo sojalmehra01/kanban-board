@@ -299,16 +299,14 @@ const Home = () => {
       };
     
       const updateCard = (bid, cid, card) => {
-        const index = boards.findIndex((item) => item.id === bid);
-        if (index < 0) return;
-    
+        const index = boards.findIndex((item) => item.boardId === bid);
         const tempBoards = [...boards];
         const cards = tempBoards[index].cards;
-    
-        const cardIndex = cards.findIndex((item) => item.id === cid);
-        if (cardIndex < 0) return;
-    
+        const cardIndex = cards.findIndex((item) => item.cardId === cid);
         tempBoards[index].cards[cardIndex] = card;
+        if (index < 0 || cardIndex < 0) return;
+        
+    
     
         setBoards(tempBoards);
       };

@@ -171,6 +171,7 @@ console.log(props.cardIndex);
               ...values,
               tasks: updatedTasks,
             });
+            props.updateCard(boardIndex, cardIndex, tempBoards[boardIndex].cards[cardIndex])
             alert('Subtask added');
         } else {
             console.log(json.error);
@@ -179,7 +180,7 @@ console.log(props.cardIndex);
         console.log(error);
     }
 };
-//-----------------------------------------------------
+
   const addTask = (value) => {
     setValues({
       ...values,
@@ -204,8 +205,6 @@ console.log(props.cardIndex);
       localStorage.setItem("prac-kanban", JSON.stringify(tempBoards));
       setBoards(tempBoards);
   };
-
-  //=============================================YE TUJHE KARNA HAI SOJAL=============
   const removesubtask = (id) => {
     const tasks = [...values.tasks];
     console.log(tasks);
