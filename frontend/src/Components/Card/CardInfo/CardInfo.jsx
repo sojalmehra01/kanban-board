@@ -132,9 +132,9 @@ function CardInfo(props) {
 //-------------------------------------------------------
   const addsubtaskhandler = async(title) => {
     try {
-        const tempBoards = [...boards];
-        const boardIndex = tempBoards.findIndex(board => board.boardId === props.card.board_id);
-        const cardIndex = tempBoards[boardIndex].cards.findIndex(card => card.cardId === props.card.cardId);
+        // const tempBoards = [...boards];
+        // const boardIndex = tempBoards.findIndex(board => board.boardId === props.card.board_id);
+        // const cardIndex = tempBoards[boardIndex].cards.findIndex(card => card.cardId === props.card.cardId);
 
         let subtaskId = Date.now() + Math.random() * 2;
         subtaskId = subtaskId.toFixed(1);
@@ -164,15 +164,16 @@ function CardInfo(props) {
         const json = await response.json();
         if (json.success) {
           const updatedTasks = [...values.tasks, newSubtask];
-          tempBoards[boardIndex].cards[cardIndex].tasks = updatedTasks;
-          localStorage.setItem("prac-kanban", JSON.stringify(tempBoards));
-          setBoards(tempBoards);
+          boards[props.boardIndex].cards[props.cardIndex].tasks = updatedTasks;
+          setBoards(boards);
+          localStorage.setItem("prac-kanban", JSON.stringify(boards));
             setValues({
               ...values,
               tasks: updatedTasks,
             });
-            props.updateCard(boardIndex, cardIndex, tempBoards[boardIndex].cards[cardIndex])
-            alert('Subtask added');
+          props.updateCard(boards[props.boardIndex].boardId,boards[props.boardIndex].cards[props.cardIndex].cardId , boards[props.boardIndex].cards[props.cardIndex])
+          console.log("subtask added");
+          alert('Subtask added');
         } else {
             console.log(json.error);
         }
@@ -188,50 +189,46 @@ function CardInfo(props) {
     });
   };
 
-  const removeTask = (id) => {
+  const removeTask = async (id) => {
 
-    const tempBoards = [...boards];
-    const boardIndex = tempBoards.findIndex(board => board.boardId === props.card.board_id);
-    const cardIndex = tempBoards[boardIndex].cards.findIndex(card => card.cardId === props.card.cardId);
-    const tasks = [...values.tasks];
-    
-    const tempTasks = tasks.filter((item) => item.subtaskId !== id);
-    console.log(tempTasks);
-    setValues({
-      ...values,
-      tasks: tempTasks,
-      });
-      tempBoards[boardIndex].cards[cardIndex].tasks = tempTasks;
-      localStorage.setItem("prac-kanban", JSON.stringify(tempBoards));
-      setBoards(tempBoards);
+    try {
+
+      const response = await fetch("http://localhost:5000/api/deleteSubtask", {
+        method:"POST", 
+        headers:{
+          "Content-Type": "application/json"
+        },
+        body:JSON.stringify({
+          subtaskId: id,
+        })
+      })
+      const json = await response.json();
+
+      if(json.success)
+        {
+          const tempBoards = [...boards];
+          const boardIndex = tempBoards.findIndex(board => board.boardId === props.card.board_id);
+          const cardIndex = tempBoards[boardIndex].cards.findIndex(card => card.cardId === props.card.cardId);
+          const tasks = [...values.tasks];
+          
+          const tempTasks = tasks.filter((item) => item.subtaskId !== id);
+          console.log(tempTasks);
+          setValues({
+            ...values,
+            tasks: tempTasks,
+          });
+          tempBoards[boardIndex].cards[cardIndex].tasks = tempTasks;
+          localStorage.setItem("prac-kanban", JSON.stringify(tempBoards));
+          setBoards(tempBoards);
+          alert("subtask deleted");
+        }
+        else{
+          console.log(json.message);
+        }
+    } catch (error) {
+      console.log(error); 
+    }
   };
-  const removesubtask = (id) => {
-    const tasks = [...values.tasks];
-    console.log(tasks);
-    console.log(id);
-
-    const subtaskIndex = tasks.findIndex(subtask => subtask.subtaskId === id)
-    tasks.splice(subtaskIndex,1);
-
-    console.log(subtaskIndex);
-
-    // tasks[subtaskIndex].isCompleted = true;
-    
-    setValues({
-      ...values, 
-      tasks:tasks
-    })
-    
-    // const updatedTasks = tasks.map(task => {
-    //     const updatedSubtasks = task.filter(subtask => subtask.subtaskId !== id);
-    //     return { ...task, subtasks: updatedSubtasks };
-    // });
-
-    // setValues({
-    //     ...values,
-    //     tasks: updatedTasks,
-    // });
-};
 
 
   const updateTask = (id, value) => {
@@ -244,9 +241,7 @@ function CardInfo(props) {
     tasks[index].isCompleted = value;
     const boardId = boards[props.boardIndex].boardId;
     const cardId = boards[props.boardIndex].cards[props.cardIndex].cardId;
-    // console.log("board id =", boardId, " - card id =", cardId, " - task id =", tasks[index].subtaskId);
-    const newCard = boards[props.boardIndex].cards[props.cardIndex]
-    console.log(newCard);
+    const newCard = boards[props.boardIndex].cards[props.cardIndex];
     newCard.tasks[index].isCompleted = value;
     props.updateCard(boardId, cardId, newCard);
 

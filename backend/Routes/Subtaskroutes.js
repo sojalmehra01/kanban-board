@@ -33,7 +33,7 @@ router.post("/createSubtask", async (req, res) => {
 });
 
 router.post("/deleteSubtask", async (req, res) => {
-    const { subtaskId } = req.body.subtaskId;
+    const subtaskId  = req.body.subtaskId;
     try {
         const result = await Subtask.updateOne(
             {
