@@ -48,11 +48,11 @@ function CardInfo(props) {
       // console.log((typeof boards === undefined)+ "     " +boards)
 
 
-      if(!(typeof (boards )=== "undefined"))
-        {
-          console.log(boards);
-      console.log(boards[0].cards[0].tasks)
-        }
+      // if(!(typeof (boards )=== "undefined"))
+      //   {
+      //     console.log(boards);
+      // console.log(boards[0].cards[0].tasks)
+      //   }
    
 
 
@@ -93,7 +93,7 @@ function CardInfo(props) {
     "#240959",
   ];
 
-console.log(props.cardIndex);
+// console.log(props.cardIndex);
 
   const [selectedColor, setSelectedColor] = useState();
   const [values, setValues] = useState({
@@ -235,12 +235,20 @@ console.log(props.cardIndex);
 
 
   const updateTask = (id, value) => {
+    console.log(value)
     const tasks = [...values.tasks];
 
     const index = tasks.findIndex((item) => item.subtaskId === id);
     if (index < 0) return;
 
     tasks[index].isCompleted = value;
+    const boardId = boards[props.boardIndex].boardId;
+    const cardId = boards[props.boardIndex].cards[props.cardIndex].cardId;
+    // console.log("board id =", boardId, " - card id =", cardId, " - task id =", tasks[index].subtaskId);
+    const newCard = boards[props.boardIndex].cards[props.cardIndex]
+    console.log(newCard);
+    newCard.tasks[index].isCompleted = value;
+    props.updateCard(boardId, cardId, newCard);
 
     setValues({
       ...values,
@@ -423,7 +431,9 @@ console.log(props.cardIndex);
                   type="checkbox"
                   defaultChecked={item.isCompleted}
                   onChange={(event) =>
-                    updateTask(item.subtaskId, event.target.checked)
+                    {updateTask(item.subtaskId, event.target.checked)
+                      console.log(event.target.checked);
+                    }
                   }
                 />
                 <p className={item.isCompleted ? "completed" : ""}>{item.subtask_title}</p>

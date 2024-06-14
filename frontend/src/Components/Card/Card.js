@@ -12,10 +12,7 @@ function Card(props) {
   const [boards, setBoards] = useState({
     ...props.boards
   })
-  const updateBoards = (newBoards) => {
-    setBoards(newBoards);
-
-  }
+  
 
   const {boardId, cardId, title,board_title, card_user, date, tasks, labels } = props.card;
 
@@ -102,7 +99,7 @@ function Card(props) {
           {tasks && tasks?.length > 0 && (
             <p className="card_footer_item">
               <CheckSquare className="card_footer_icon" />
-              {tasks?.filter((item) => item.completed)?.length}/{tasks?.length}
+              {tasks?.filter((item) => item.isCompleted)?.length}/{tasks?.length}
             </p>
           )}
         </div>
