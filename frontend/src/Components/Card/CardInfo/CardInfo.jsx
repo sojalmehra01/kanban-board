@@ -5,6 +5,7 @@ import io from 'socket.io-client';
 
 import { supabase } from "../../../Supabaseclient";
 import {
+  User,
   Calendar,
   CheckSquare,
   List,
@@ -12,6 +13,7 @@ import {
   Trash,
   Type,
   X,
+  Users,
 } from "react-feather";
 import Chatmodal from "../../../chat-window/Chatmodal";
 import Modal from "../../Modal/Modal";
@@ -295,6 +297,77 @@ function CardInfo(props) {
   //       socket.emit('send', message);
   //       setMessage('');
   // };
+
+  const getCollabCards = async() => {
+    try {
+      const response  = await fetch("http://localhost:5000/api/getCollaborationCards", {
+        method: "POST", 
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user: 'gaurav',
+        })
+      }
+    )
+
+    const json = await response.json();
+    if(json.success)
+      {
+        console.log(json.cards);
+
+      }
+      else
+      {
+        console.log(json.message);
+      }
+    }
+    catch(error)
+    {
+      console.error(error);
+    }
+  }
+
+
+
+  const addCollaborator = async(value) => {
+
+    try {
+
+      const boardId = boards[props.boardIndex].boardId;
+      const cardId = boards[props.boardIndex].cards[props.cardIndex].cardId;
+      
+      const response = await fetch("http://localhost:5000/api/addCollaborator", {
+        method: 'POST', 
+        headers:{
+          "Content-type":"application/json",
+        }, 
+        body:JSON.stringify({
+          boardId: boardId,
+          cardId: cardId,
+          collaborator_email:value,
+        })
+      })
+
+      const json = await response.json();
+      if(json.success)
+      {
+        alert("collaborator added");
+      }
+
+
+    } catch (error) {
+      console.log(error);
+    }
+
+  }
+
+
+
+
+
+
+
    const handleSubmitMessage = () => {
     const trimmedMessage = message.trim();
     if (trimmedMessage.length > 0) {
@@ -310,9 +383,18 @@ function CardInfo(props) {
   }
   return (
     <Modal onClose={props.onClose}>
-    <button onClick={()=>{console.log(values)}}>Get boards</button>
       <div className="cardinfo">
+        <button onClick={getCollabCards}>getCollabCards</button>
         <div className="cardinfo_box">
+          <div className="cardinfo_box_title">
+            <Users/>
+            <p>Collaboration</p>
+          </div>
+          <Editable
+            text = "Collab With"
+            placeholder = "Collaborator's Email"
+            onSubmit= {(value)=>{addCollaborator(value)}}
+          />
           <div className="cardinfo_box_title">
             <Type />
             <p>Title</p>
@@ -324,7 +406,6 @@ function CardInfo(props) {
             onSubmit={updateTitle}
           />
 
-          {/* <Collaborate/> */}
 
           <button onClick={() => {setIsChatModalOpen(true); 
                     }} className="chat-button">chat</button>

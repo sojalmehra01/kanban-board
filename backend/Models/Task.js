@@ -45,7 +45,10 @@ const taskSchema = new mongoose.Schema({
   card_user: {
     type: String,
     required:true,
-  }
+  },
+  card_sharedWith:[{
+    type: Object,
+  }]
 })
 
 module.exports = mongoose.model('Task', taskSchema);

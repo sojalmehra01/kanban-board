@@ -5,6 +5,7 @@ import Dropdown from "../Dropdown/Dropdown";
 
 import "./Card.css";
 import CardInfo from "./CardInfo/CardInfo";
+import Editable from "../Editabled/Editable";
 
 function Card(props) {
   const [showDropdown, setShowDropdown] = useState(false);

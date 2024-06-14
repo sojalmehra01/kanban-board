@@ -6,6 +6,41 @@ import { useNavigate } from "react-router-dom";
 
 const Home = () => {
 
+
+
+  const getCollabCards = async() => {
+    try {
+      console.log(userDetails.user_metadata.email);
+      const userEmail = userDetails.user_metadata.email;
+      const response  = await fetch("http://localhost:5000/api/getCollaborationCards", {
+        method: "POST", 
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user: userEmail,
+        })
+      }
+    )
+
+    const json = await response.json();
+    if(json.success)
+      {
+        console.log(json.cards);
+
+      }
+      else
+      {
+        console.log(json.message);
+      }
+    }
+    catch(error)
+    {
+      console.error(error);
+    }
+  }
+
+
   const navigate = useNavigate();
   
   
@@ -27,6 +62,7 @@ const Home = () => {
     userDetails = user;
     user_name = user.user_metadata.full_name;
     retrieveBoards();
+    getCollabCards();
   }
   
   const retrieveBoards = async () => {
@@ -209,7 +245,8 @@ const Home = () => {
           title: title,
           board_title: tempBoards[index].title,
           card_user: user_name,
-          tasks: []
+          tasks: [],
+          card_sharedWith:[]
         }
 
         console.log(newCard);
@@ -224,7 +261,8 @@ const Home = () => {
             boardId: tempBoards[index]._id,
             cardId: cardId,
             card_title: newCard.title,
-            card_user:user_name
+            card_user:user_name,
+            card_sharedWith: [],
           })
         }
       )
@@ -316,6 +354,13 @@ const Home = () => {
         localStorage.setItem("prac-kanban", JSON.stringify(boards));
       }, [boards]);
 
+      const sharedBoard = {
+          _id : "",
+          boardId: 1,
+          title: "Shared", 
+          cards: [],
+      }
+
 
 
   return (
@@ -323,6 +368,13 @@ const Home = () => {
       <div className="container">
         <div className="app_boards_container">
         <div className="app_boards">
+          <Board
+            key = {1}
+            board = {sharedBoard}
+            removeBoard = {()=>{alert('cannot remove shared board')}}
+            removeCard = {()=>{alert('cannot remove shared cards')}}
+            addCard = {()=>{alert('cannot add card in shared boards')}}
+          />
           {boards.map((item, index) => (
             <Board
               index = {index}
@@ -334,7 +386,7 @@ const Home = () => {
               // addsubtask={addsubtaskhandler} //new
               dragEnded={dragEnded}
               dragEntered={dragEntered}
-              updateCard={updateCard}
+              updateCard={updateCard}x  
             />
           ))}
           <div className="app_boards_last">
