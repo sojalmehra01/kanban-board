@@ -5,17 +5,13 @@ import Dropdown from "../Dropdown/Dropdown";
 
 import "./Card.css";
 import CardInfo from "./CardInfo/CardInfo";
-import Editable from "../Editabled/Editable";
 
 function Card(props) {
   const [showDropdown, setShowDropdown] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [boards, setBoards] = useState({
-    ...props.boards
-  })
   
 
-  const {boardId, cardId, title,board_title, card_user, date, tasks, labels } = props.card;
+  const {boardId, cardId, title,board_title, card_user, date, tasks, labels, card_title } = props.card;
 
   const formatDate = (value) => {
     if (!value) return "";
@@ -89,7 +85,7 @@ function Card(props) {
             )}
           </div>
         </div>
-        <div className="card_title">{title}</div>
+        {title || card_title?<div className="card_title">{title || card_title}</div>:""}
         <div className="card_footer">
           {date && (
             <p className="card_footer_item">

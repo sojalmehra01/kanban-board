@@ -6,11 +6,18 @@ import { useNavigate } from "react-router-dom";
 
 const Home = () => {
 
+  const [sharedBoards, setSharedBoards] = useState({
+          _id : "",
+          boardId: 1,
+          title: "Shared", 
+          cards: [],
+  });
+
 
 
   const getCollabCards = async() => {
     try {
-      console.log(userDetails.user_metadata.email);
+      // console.log(userDetails.user_metadata.email);
       const userEmail = userDetails.user_metadata.email;
       const response  = await fetch("http://localhost:5000/api/getCollaborationCards", {
         method: "POST", 
@@ -18,7 +25,7 @@ const Home = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          user: userEmail,
+          user: userEmail
         })
       }
     )
@@ -26,7 +33,13 @@ const Home = () => {
     const json = await response.json();
     if(json.success)
       {
-        console.log(json.cards);
+        // const temp = sharedBoards;
+        // temp.cards = json.cards;
+        // setSharedBoards(temp);
+        setSharedBoards((prevSharedBoards) => ({
+          ...prevSharedBoards,
+          cards: json.cards,
+        }));
 
       }
       else
@@ -40,6 +53,7 @@ const Home = () => {
     }
   }
 
+ 
 
   const navigate = useNavigate();
   
@@ -61,8 +75,8 @@ const Home = () => {
   const { data: { user } } = await supabase.auth.getUser()
     userDetails = user;
     user_name = user.user_metadata.full_name;
-    retrieveBoards();
     getCollabCards();
+    retrieveBoards();
   }
   
   const retrieveBoards = async () => {
@@ -354,27 +368,22 @@ const Home = () => {
         localStorage.setItem("prac-kanban", JSON.stringify(boards));
       }, [boards]);
 
-      const sharedBoard = {
-          _id : "",
-          boardId: 1,
-          title: "Shared", 
-          cards: [],
-      }
-
-
-
+      
   return (
     <div className='home'>
       <div className="container">
         <div className="app_boards_container">
         <div className="app_boards">
+          {sharedBoards.cards.length > 0?
           <Board
+          index  = {6969}
             key = {1}
-            board = {sharedBoard}
+            board = {sharedBoards}
             removeBoard = {()=>{alert('cannot remove shared board')}}
             removeCard = {()=>{alert('cannot remove shared cards')}}
             addCard = {()=>{alert('cannot add card in shared boards')}}
           />
+          :""}
           {boards.map((item, index) => (
             <Board
               index = {index}
@@ -383,10 +392,9 @@ const Home = () => {
               addCard={addCardHandler}
               removeBoard={() => removeBoard(item.boardId)}
               removeCard={removeCard}
-              // addsubtask={addsubtaskhandler} //new
               dragEnded={dragEnded}
               dragEntered={dragEntered}
-              updateCard={updateCard}x  
+              updateCard={updateCard}
             />
           ))}
           <div className="app_boards_last">

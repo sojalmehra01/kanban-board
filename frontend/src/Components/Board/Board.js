@@ -9,7 +9,7 @@ import "./Board.css";
 
 function Board(props) {
   const [showDropdown, setShowDropdown] = useState(false);
-
+  console.log(props.board)
   return (
     <div className="board">
       <div className="board_header">
@@ -35,7 +35,7 @@ function Board(props) {
       <div className="board_cards custom-scroll">
         {props.board?.cards?.map((item, index) => (
           <Card
-          boardIndex = {props.index}
+            boardIndex = {props.index}
             index={index}
             key={item.boardId}
             card={item}
