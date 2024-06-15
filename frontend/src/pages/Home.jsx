@@ -76,7 +76,7 @@ const Home = () => {
     userDetails = user;
     user_name = user.user_metadata.full_name;
     getCollabCards();
-    retrieveBoards();
+   retrieveBoards();
   }
   
   const retrieveBoards = async () => {
@@ -99,6 +99,9 @@ const Home = () => {
         for (let i = 0; i < json.boards.length; i++){
           boards[i]._id = json.boards[i]._id ; 
         }
+
+        ShiftIndex(); 
+        //setBoards(json.boards);
       } else {
         console.log(json.message);
       }
@@ -107,8 +110,17 @@ const Home = () => {
     }
   }
   
+  const ShiftIndex = () => {
+    const tempBoards = [...boards]
+    console.log("yahi boards hai pehle ",boards);
+    if (tempBoards[0].board_title !== "Shared") {
+      tempBoards.unshift(sharedBoards);
+      boards = tempBoards;
+      console.log("ye h baad m ",boards);
+    }
+}
 
-  const [boards, setBoards] = useState(
+    const [boards, setBoards] = useState(
     JSON.parse(localStorage.getItem("prac-kanban")) || []
       );
     
@@ -359,15 +371,16 @@ const Home = () => {
         if (index < 0 || cardIndex < 0) return;
         
     
-    
         setBoards(tempBoards);
-      };
+      };   
 
-    
       useEffect(() => {
         localStorage.setItem("prac-kanban", JSON.stringify(boards));
       }, [boards]);
 
+  // const ShiftIndex =  {
+  //   console.log(tempBoards[0].board_title);
+  // }
       
   return (
     <div className='home'>
@@ -376,7 +389,7 @@ const Home = () => {
         <div className="app_boards">
           {sharedBoards.cards.length > 0?
           <Board
-          index  = {6969}
+            index  = {6969}
             key = {1}
             board = {sharedBoards}
             removeBoard = {()=>{alert('cannot remove shared board')}}
