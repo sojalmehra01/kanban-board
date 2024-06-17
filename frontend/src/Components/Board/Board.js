@@ -9,7 +9,7 @@ import "./Board.css";
 
 function Board(props) {
   const [showDropdown, setShowDropdown] = useState(false);
-  console.log(props.board)
+  // console.log(props.board)
   return (
     <div className="board">
       <div className="board_header">

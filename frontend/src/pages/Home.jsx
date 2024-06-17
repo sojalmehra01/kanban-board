@@ -31,15 +31,21 @@ const Home = () => {
     )
 
     const json = await response.json();
+    
     if(json.success)
       {
-        // const temp = sharedBoards;
-        // temp.cards = json.cards;
-        // setSharedBoards(temp);
-        setSharedBoards((prevSharedBoards) => ({
-          ...prevSharedBoards,
-          cards: json.cards,
-        }));
+        const temp = sharedBoards;
+        temp.cards = json.cards;
+        setSharedBoards(temp);
+        const br = { ...boards[0], cards: sharedBoards.cards }; 
+        const newBoards = [...boards];
+        newBoards[0] = br;
+
+        // console.log("br", br);
+        // console.log("newBoards", newBoards);
+
+        setBoards(newBoards); 
+        
 
       }
       else
@@ -54,6 +60,9 @@ const Home = () => {
   }
 
  
+  const [boards, setBoards] = useState(
+    JSON.parse(localStorage.getItem("prac-kanban")) || []
+      );
 
   const navigate = useNavigate();
   
@@ -75,10 +84,24 @@ const Home = () => {
   const { data: { user } } = await supabase.auth.getUser()
     userDetails = user;
     user_name = user.user_metadata.full_name;
+    retrieveBoards();
     getCollabCards();
-   retrieveBoards();
+    if(boards[0].title!== "Shared")
+      {
+        ShiftIndex();
+      }
+
   }
   
+  const ShiftIndex = () => {
+    let tempBoards = [...boards]
+    console.log("yahi boards hai pehle ",boards);
+    if (tempBoards[0].board_title !== "Shared") {
+      tempBoards.unshift(sharedBoards);
+      setBoards(tempBoards)
+      console.log("ye h baad m ",boards);
+    }
+  }
   const retrieveBoards = async () => {
     try {
       const response = await fetch("http://localhost:5000/api/getBoards",
@@ -93,14 +116,12 @@ const Home = () => {
         } 
         )
       const json = await response.json();
-      console.log(json);
+      // console.log(json);
       if (json.success) {
-        console.log(json.boards);
-        for (let i = 0; i < json.boards.length; i++){
-          boards[i]._id = json.boards[i]._id ; 
-        }
-
-        ShiftIndex(); 
+        // console.log(json.boards);
+        // for (let i = 0; i < json.boards.length; i++){
+        //   boards[i]._id = json.boards[i]._id ; 
+        // }
         //setBoards(json.boards);
       } else {
         console.log(json.message);
@@ -110,19 +131,8 @@ const Home = () => {
     }
   }
   
-  const ShiftIndex = () => {
-    const tempBoards = [...boards]
-    console.log("yahi boards hai pehle ",boards);
-    if (tempBoards[0].board_title !== "Shared") {
-      tempBoards.unshift(sharedBoards);
-      boards = tempBoards;
-      console.log("ye h baad m ",boards);
-    }
-}
 
-    const [boards, setBoards] = useState(
-    JSON.parse(localStorage.getItem("prac-kanban")) || []
-      );
+    
     
     const [targetCard, setTargetCard] = useState({
       bid: "",
@@ -387,16 +397,6 @@ const Home = () => {
       <div className="container">
         <div className="app_boards_container">
         <div className="app_boards">
-          {sharedBoards.cards.length > 0?
-          <Board
-            index  = {6969}
-            key = {1}
-            board = {sharedBoards}
-            removeBoard = {()=>{alert('cannot remove shared board')}}
-            removeCard = {()=>{alert('cannot remove shared cards')}}
-            addCard = {()=>{alert('cannot add card in shared boards')}}
-          />
-          :""}
           {boards.map((item, index) => (
             <Board
               index = {index}
