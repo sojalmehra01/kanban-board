@@ -298,35 +298,6 @@ function CardInfo(props) {
   //       setMessage('');
   // };
 
-  const getCollabCards = async() => {
-    try {
-      const response  = await fetch("http://localhost:5000/api/getCollaborationCards", {
-        method: "POST", 
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          user: 'gaurav',
-        })
-      }
-    )
-
-    const json = await response.json();
-    if(json.success)
-      {
-        console.log(json.cards);
-
-      }
-      else
-      {
-        console.log(json.message);
-      }
-    }
-    catch(error)
-    {
-      console.error(error);
-    }
-  }
 
 
 
@@ -384,7 +355,6 @@ function CardInfo(props) {
   return (
     <Modal onClose={props.onClose}>
       <div className="cardinfo">
-        <button onClick={getCollabCards}>getCollabCards</button>
         <div className="cardinfo_box">
           <div className="cardinfo_box_title">
             <Users/>

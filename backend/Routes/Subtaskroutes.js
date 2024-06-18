@@ -57,6 +57,28 @@ router.post("/deleteSubtask", async (req, res) => {
 });
 
 
+router.post('/getCollabSubtasks', async(req, res) => {
+    try {
+        const cardId = req.body.cardId;
+        console.log(cardId);
+        if(!cardId) 
+        {
+            return res.json({success: false, message: "card id required"})
+        }
+
+        const subtasks = await Subtask.find({cardId: cardId, 
+            isDeleted: false,
+        });
+        console.log(subtasks)
+        res.json({success:true, message: "collab subtasks fetched", subtasks: subtasks});
+
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({message: error, error: "an error occured"})
+    }
+})
+
+
 
 
 

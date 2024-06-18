@@ -13,6 +13,33 @@ const Home = () => {
           cards: [],
   });
 
+  const getCollabSubtasks = async(cardId)=> {
+    try {
+      const response = await fetch ("http://localhost:5000/api/getCollabSubtasks", {
+        method: "POST", 
+        headers: {
+          "Content-Type":"application/json"
+        },
+        body: JSON.stringify({
+          cardId: cardId,
+        })
+      })
+
+      const json = await response.json();
+
+      if(json.success)
+        {
+          console.log("subtasks retrieved", json.subtasks);
+          return json.subtasks;
+        }
+
+      else{
+        console.log(json.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
 
   const getCollabCards = async() => {
@@ -36,15 +63,20 @@ const Home = () => {
       {
         const temp = sharedBoards;
         temp.cards = json.cards;
+        // retrieving subtasks and adding to them to their respective collab cards
+        temp.cards.map(async (item, index)=>{
+          const subtasks = await getCollabSubtasks(item.cardId);
+          item.tasks = subtasks;
+          console.log("i am card from temp at index" , index, item);
+        })
         setSharedBoards(temp);
         const br = { ...boards[0], cards: sharedBoards.cards }; 
         const newBoards = [...boards];
         newBoards[0] = br;
+        console.log(" i am new Board" , newBoards[0]);
+        setBoards(newBoards);
+        localStorage.setItem("prac-kanban", JSON.stringify(boards));
 
-        // console.log("br", br);
-        // console.log("newBoards", newBoards);
-
-        setBoards(newBoards); 
         
 
       }
