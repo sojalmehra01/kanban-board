@@ -64,21 +64,20 @@ const Home = () => {
         const temp = sharedBoards;
         temp.cards = json.cards;
         // retrieving subtasks and adding to them to their respective collab cards
-        temp.cards.map(async (item, index)=>{
+        const updatedCards = await Promise.all(temp.cards.map(async (item, index)=>{
           const subtasks = await getCollabSubtasks(item.cardId);
-          item.tasks = subtasks;
+          // item.tasks = subtasks;
           console.log("i am card from temp at index" , index, item);
-        })
+          return { ...item, tasks: subtasks };
+        }));
+        temp.cards = updatedCards;
         setSharedBoards(temp);
         const br = { ...boards[0], cards: sharedBoards.cards }; 
         const newBoards = [...boards];
         newBoards[0] = br;
         console.log(" i am new Board" , newBoards[0]);
         setBoards(newBoards);
-        localStorage.setItem("prac-kanban", JSON.stringify(boards));
-
-        
-
+        localStorage.setItem("prac-kanban", JSON.stringify(newBoards));
       }
       else
       {
