@@ -145,7 +145,7 @@ function CardInfo(props) {
 
         const newSubtask = {
             cardId: values.cardId,
-            card_title: values.title, 
+            card_title: values.title?values.title:values.card_title, 
             subtaskId: subtaskId,
             subtask_title: title,
             isCompleted: false,
