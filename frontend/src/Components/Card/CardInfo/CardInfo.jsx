@@ -233,24 +233,50 @@ function CardInfo(props) {
   };
 
 
-  const updateTask = (id, value) => {
-    console.log(value)
-    const tasks = [...values.tasks];
+  const updateTask = async (id, value) => {
+    try {
+      const tasks = [...values.tasks];
+      const index = tasks.findIndex((item) => item.subtaskId === id);
+      if (index < 0) return;
+      const response = await fetch("http://localhost:5000/api/markSubtask",{
+        method: "POST", 
+        headers: {
+          "Content-Type":"application/json"
+        }, 
+        body: JSON.stringify({
+          subtaskId: id,
+          value: value
+        })
+      })
 
-    const index = tasks.findIndex((item) => item.subtaskId === id);
-    if (index < 0) return;
+      const json = await response.json();
 
-    tasks[index].isCompleted = value;
-    const boardId = boards[props.boardIndex].boardId;
-    const cardId = boards[props.boardIndex].cards[props.cardIndex].cardId;
-    const newCard = boards[props.boardIndex].cards[props.cardIndex];
-    newCard.tasks[index].isCompleted = value;
-    props.updateCard(boardId, cardId, newCard);
+      if(json.success)
+        {
+          tasks[index].isCompleted = value;
+          const boardId = boards[props.boardIndex].boardId;
+          const cardId = boards[props.boardIndex].cards[props.cardIndex].cardId;
+          const newCard = boards[props.boardIndex].cards[props.cardIndex];
+          newCard.tasks[index].isCompleted = value;
+          props.updateCard(boardId, cardId, newCard);
+          console.log("getting checked" , newCard.tasks[index])
 
-    setValues({
-      ...values,
-      tasks,
-    });
+          setValues({
+            ...values,
+            tasks,
+          });
+          const subtaskAlert = "Subtask " + " '" + newCard.tasks[index].subtask_title+ "'" + " marked " + value
+          // alert("Subtask '", newCard.tasks[index].subtask_title, " ' marked ", value);
+          alert(subtaskAlert)
+        }
+        else
+        {
+          console.log(json.message);
+        }
+
+    } catch (error) {
+      console.log(error)  
+    }
   };
 
   //===========================================YAHA TAK ==================================

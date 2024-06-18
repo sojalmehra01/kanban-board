@@ -56,6 +56,31 @@ router.post("/deleteSubtask", async (req, res) => {
     }
 });
 
+router.post("/markSubtask", async(req, res)=>{
+    const subtaskId = req.body.subtaskId;
+    const value = req.body.value;
+    if(!subtaskId) return res.status(400).json({success: false, message: "subtask id is required"});
+    try {
+        const result = await Subtask.updateOne({
+            subtaskId: subtaskId,
+        },
+        {
+            $set:{
+                isCompleted: value
+            }
+        }
+    )
+    if (result) {
+        res.status(200).json({ success: true, message: "Subtask marked successfully" });
+    } else {
+        res.status(400).json({ success: false, message: "Subtask marking failed" });
+    }
+    } catch (error) {
+        console.error("Error marking subtask:", error);
+        res.status(500).json({ success: false, message: "Internal server error" });
+    }
+});
+
 
 router.post('/getCollabSubtasks', async(req, res) => {
     try {
