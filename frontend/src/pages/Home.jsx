@@ -263,7 +263,7 @@ const Home = () => {
             const tempBoards = [...boards];
             tempBoards.splice(index, 1);
             setBoards(tempBoards);
-            retrieveUser();
+            // retrieveUser();
           }
           else{
             alert("cannot delete please try again later");
