@@ -241,6 +241,11 @@ const Home = () => {
         // retrieveUser();
         console.log("deleting this board " + id);
         const index = boards.findIndex((item) => item.boardId === id);
+        if(index === 0)
+          {
+            alert('cannot remove collaboration board');
+            return;
+          }
 
         try {
           const response = await fetch('http://localhost:5000/api/deleteBoard',
