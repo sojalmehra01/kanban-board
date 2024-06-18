@@ -29,7 +29,7 @@ const Home = () => {
 
       if(json.success)
         {
-          console.log("subtasks retrieved", json.subtasks);
+          // console.log("subtasks retrieved", json.subtasks);
           return json.subtasks;
         }
 
@@ -67,7 +67,7 @@ const Home = () => {
         const updatedCards = await Promise.all(temp.cards.map(async (item, index)=>{
           const subtasks = await getCollabSubtasks(item.cardId);
           // item.tasks = subtasks;
-          console.log("i am card from temp at index" , index, item);
+          // console.log("i am card from temp at index" , index, item);
           return { ...item, tasks: subtasks };
         }));
         temp.cards = updatedCards;
@@ -75,9 +75,9 @@ const Home = () => {
         const br = { ...boards[0], cards: sharedBoards.cards }; 
         const newBoards = [...boards];
         newBoards[0] = br;
-        console.log(" i am new Board" , newBoards[0]);
+        // console.log(" i am new Board" , newBoards[0]);
         setBoards(newBoards);
-        localStorage.setItem("prac-kanban", JSON.stringify(newBoards));
+        // localStorage.setItem("prac-kanban", JSON.stringify(newBoards));
       }
       else
       {
@@ -115,9 +115,9 @@ const Home = () => {
   const { data: { user } } = await supabase.auth.getUser()
     userDetails = user;
     user_name = user.user_metadata.full_name;
-    retrieveBoards();
-    getCollabCards();
-    if(boards[0].title!== "Shared")
+    await retrieveBoards();
+    await getCollabCards();
+    if(boards.length > 0 && boards[0].title!== "Shared")
       {
         ShiftIndex();
       }
@@ -150,10 +150,10 @@ const Home = () => {
       // console.log(json);
       if (json.success) {
         // console.log(json.boards);
-        // for (let i = 0; i < json.boards.length; i++){
-        //   boards[i]._id = json.boards[i]._id ; 
-        // }
-        //setBoards(json.boards);
+        for (let i = 0; i < json.boards.length; i++){
+          boards[i]._id = json.boards[i]._id ; 
+        }
+        setBoards(json.boards);
       } else {
         console.log(json.message);
       }
@@ -216,7 +216,8 @@ const Home = () => {
           tempBoards.push(newBoard);
           setBoards(tempBoards);
           alert('board created')
-          retrieveUser();
+          // retrieveUser();
+          console.log(boards)
         }
         else{
           console.log(json);
