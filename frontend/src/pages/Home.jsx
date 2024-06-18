@@ -355,6 +355,10 @@ const Home = () => {
           console.log('index is zero');
           return;
         };
+        if(index === 0) {
+          alert("cannot delete the collaboration card")
+          return;
+        }
     
         const tempBoards = [...boards];
         const cards = tempBoards[index].cards;
