@@ -14,7 +14,7 @@ function Board(props) {
     <div className="board">
       <div className="board_header">
         <h1 className="board_header_title">
-          {props.board?.title}
+          {props.board?.title||props.board?.board_title}
           {" ( "}<span>{props.board?.cards?.length || 0}</span>{" )"}
         </h1>
         <div

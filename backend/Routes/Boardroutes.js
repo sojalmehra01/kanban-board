@@ -22,9 +22,10 @@ router.post("/createBoard",
    async (req, res) =>{
       try {
          await Board.create({
-            board_title: req.body.title, 
+            board_title: req.body.board_title, 
             boardId : req.body.board_id, 
-            board_user: req.body.board_user
+            board_user: req.body.board_user,
+            cards: []
          })
       res.json({success:true, message: "board successfully created"})
       } catch (error){
@@ -35,6 +36,7 @@ router.post("/createBoard",
          }
          else
          {
+            console.log(error);
             res.status(500).json({success: false, error: 'An error occurred' });
          }
       }

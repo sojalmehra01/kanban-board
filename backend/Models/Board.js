@@ -27,6 +27,9 @@ const boardSchema = new mongoose.Schema({
    type: Boolean, 
    default: false,
  },
+ cards:[{
+   type: Object,
+ }],
  board_permissions: [{
     userId: {
       type: String,

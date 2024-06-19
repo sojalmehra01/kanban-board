@@ -9,7 +9,7 @@ const Home = () => {
   const [sharedBoards, setSharedBoards] = useState({
           _id : "",
           boardId: 1,
-          title: "Shared", 
+          board_title: "Shared", 
           cards: [],
   });
 
@@ -66,8 +66,8 @@ const Home = () => {
         // retrieving subtasks and adding to them to their respective collab cards
         const updatedCards = await Promise.all(temp.cards.map(async (item, index)=>{
           const subtasks = await getCollabSubtasks(item.cardId);
-          // item.tasks = subtasks;
-          // console.log("i am card from temp at index" , index, item);
+          item.tasks = subtasks;
+          console.log("i am card from temp at index" , index, item);
           return { ...item, tasks: subtasks };
         }));
         temp.cards = updatedCards;
@@ -77,7 +77,8 @@ const Home = () => {
         newBoards[0] = br;
         // console.log(" i am new Board" , newBoards[0]);
         setBoards(newBoards);
-        localStorage.setItem("prac-kanban", JSON.stringify(newBoards));
+        // localStorage.setItem("prac-kanban", JSON.stringify(newBoards));
+        
       }
       else
       {
@@ -117,20 +118,18 @@ const Home = () => {
     user_name = user.user_metadata.full_name;
     await retrieveBoards();
     await getCollabCards();
-    if(boards.length > 0 && boards[0].title!== "Shared")
-      {
-        ShiftIndex();
-      }
+    
 
   }
   
   const ShiftIndex = () => {
     let tempBoards = [...boards]
-    console.log("yahi boards hai pehle ",boards);
+    // console.log("yahi boards hai pehle ",tempBoards);
     if (tempBoards[0].board_title !== "Shared") {
       tempBoards.unshift(sharedBoards);
       setBoards(tempBoards)
-      console.log("ye h baad m ",boards);
+      // console.log("tempboards " , tempBoards);
+      // console.log("ye h baad m ",boards);
     }
   }
   const retrieveBoards = async () => {
@@ -150,9 +149,7 @@ const Home = () => {
       // console.log(json);
       if (json.success) {
         // console.log(json.boards);
-        for (let i = 0; i < json.boards.length; i++){
-          boards[i]._id = json.boards[i]._id ; 
-        }
+        
         setBoards(json.boards);
       } else {
         console.log(json.message);
@@ -203,9 +200,10 @@ const Home = () => {
             "Content-Type":"application/json"
           }, 
           body: JSON.stringify({
-            title: newBoard.title, 
+            board_title: newBoard.title, 
             board_id: newBoard.boardId,
             board_user: user_name,
+            cards: [],
           })
         })
         // console.log(userDetails.email)
@@ -291,32 +289,24 @@ const Home = () => {
         console.log(index);
     
         const tempBoards = [...boards];
-        // tempBoards[index].cards.push({
-        //   carddId: Date.now() + Math.random() * 2,
-        //   title,
-        //   labels: [],
-        //   date: "",
-        //   tasks: [],
-        // });
 
         
         const { data: { user } } = await supabase.auth.getUser()
-        console.log(user);
-        console.log(user.user_metadata.full_name);
+        // console.log(user);
+        // console.log(user.user_metadata.full_name);
         userDetails = user;
         user_name = user.user_metadata.full_name;
-        console.log(userDetails)
 
         let cardId = Date.now() + Math.random() * 2;
         cardId = cardId.toFixed(1);
         cardId = cardId*10;
-        console.log(cardId);
+        // console.log(cardId);
 
         let newCard = {
           board_id: tempBoards[index].boardId,
           cardId: cardId,
           title: title,
-          board_title: tempBoards[index].title,
+          board_title: tempBoards[index].board_title,
           card_user: user_name,
           tasks: [],
           card_sharedWith:[]
@@ -331,7 +321,7 @@ const Home = () => {
           "Content-Type" : "application/json"              
           },
           body: JSON.stringify({
-            boardId: tempBoards[index]._id,
+            boardId: tempBoards[index].boardId,
             cardId: cardId,
             card_title: newCard.title,
             card_user:user_name,
@@ -343,6 +333,7 @@ const Home = () => {
       if (json.success) {
         tempBoards[index].cards.push(newCard);
         setBoards(tempBoards);
+        localStorage.setItem("prac-kanban", JSON.stringify(tempBoards));
         alert('card added');
         }
           else {
@@ -426,12 +417,24 @@ const Home = () => {
       };   
 
       useEffect(() => {
+        const storedBoards = JSON.parse(localStorage.getItem("prac-kanban"));
+        console.log("sotred boards" ,storedBoards);
+        if (storedBoards) {
+          setBoards(storedBoards);
+        }
+      }, []);
+
+      useEffect(() => {
+        console.log(boards);
         localStorage.setItem("prac-kanban", JSON.stringify(boards));
+        // console.log("Updated boards: ", boards);
+        if(boards.length > 0 && boards[0].title !== "Shared")
+        {
+          ShiftIndex();
+        }
+
       }, [boards]);
 
-  // const ShiftIndex =  {
-  //   console.log(tempBoards[0].board_title);
-  // }
       
   return (
     <div className='home'>
