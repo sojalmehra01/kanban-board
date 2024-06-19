@@ -77,7 +77,7 @@ const Home = () => {
         newBoards[0] = br;
         // console.log(" i am new Board" , newBoards[0]);
         setBoards(newBoards);
-        // localStorage.setItem("prac-kanban", JSON.stringify(newBoards));
+        localStorage.setItem("prac-kanban", JSON.stringify(newBoards));
       }
       else
       {
