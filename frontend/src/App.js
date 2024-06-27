@@ -51,6 +51,7 @@ function App() {
       <Navbar/>
       <Routes>
       <Route path="*" element={<Error/>}/>
+        {/* <Route path="/" element={<Login/>}/> */}
         <Route path="/login" element={<Login setToken={setToken}/>}/>
         <Route path="/dashboard" element={<Home/>}/>
         <Route path="/signup" element={<Signup/>}/>
